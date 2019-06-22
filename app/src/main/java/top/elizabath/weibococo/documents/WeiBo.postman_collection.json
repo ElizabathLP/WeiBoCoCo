@@ -1,0 +1,549 @@
+{
+	"info": {
+		"_postman_id": "2152d11a-da34-49de-af1d-d692822685fe",
+		"name": "WeiBo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "web微博登录接口",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://passport.weibo.cn",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": "https://passport.weibo.cn/signin/login?entry=mweibo&res=wel&wm=3349&r=https%3A%2F%2Fm.weibo.cn%2F",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Mobile Safari/537.36",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "1289435034qq@sina.cn",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "LIPU1997",
+							"type": "text"
+						},
+						{
+							"key": "savestate",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "r",
+							"value": "https://m.weibo.cn/",
+							"type": "text"
+						},
+						{
+							"key": "ec",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "pagerefer",
+							"value": "https://m.weibo.cn/login?backURL=https%253A%252F%252Fm.weibo.cn%252F",
+							"type": "text"
+						},
+						{
+							"key": "entry",
+							"value": "mweibo",
+							"type": "text"
+						},
+						{
+							"key": "wentry",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "loginfrom",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "qq",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "mainpageflag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "hff",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "hfp",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://passport.weibo.cn/sso/login",
+					"protocol": "https",
+					"host": [
+						"passport",
+						"weibo",
+						"cn"
+					],
+					"path": [
+						"sso",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "微博实时搜索接口",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "MWeibo-Pwa",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": "https://m.weibo.cn/search?containerid=100103type%3D1%26q%3D%E7%99%BE%E5%BA%A6%E4%BA%91",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Mobile Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					},
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "1a727e",
+						"type": "text"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D61%26q%3D%E7%99%BE%E5%BA%A6%E4%BA%91%26t%3D0&page_type=searchall&page=1",
+					"protocol": "https",
+					"host": [
+						"m",
+						"weibo",
+						"cn"
+					],
+					"path": [
+						"api",
+						"container",
+						"getIndex"
+					],
+					"query": [
+						{
+							"key": "containerid",
+							"value": "100103type%3D61%26q%3D%E7%99%BE%E5%BA%A6%E4%BA%91%26t%3D0"
+						},
+						{
+							"key": "page_type",
+							"value": "searchall"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "微博举报接口",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://service.account.weibo.com",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": "https://service.account.weibo.com/reportspamobile?rid=4385761447536037&type=1&from=20000",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Mobile Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "category",
+							"value": "2",
+							"description": "投诉类型：1.垃圾营销 2.涉黄信息 5.不实信息 6.人身攻击 7.泄露我的隐私 8.有害信息 9.内容抄袭 10.冒充我 15.违法信息 22.诈骗信息",
+							"type": "text"
+						},
+						{
+							"key": "tag_id",
+							"value": "201",
+							"description": "具体原因： 详见文档",
+							"type": "text"
+						},
+						{
+							"key": "url",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rid",
+							"value": "4385761447536037",
+							"description": "被举报该条微博ID",
+							"type": "text"
+						},
+						{
+							"key": "uid",
+							"value": "5869499623",
+							"description": "举报人ID",
+							"type": "text"
+						},
+						{
+							"key": "r_uid",
+							"value": "5869499623",
+							"description": "被举报用户的ID",
+							"type": "text"
+						},
+						{
+							"key": "from",
+							"value": "20000",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "getrid",
+							"value": "4385761447536037",
+							"description": "被举报该条微博ID，必填，如果此项和rid都为空，猜测为举报用户",
+							"type": "text"
+						},
+						{
+							"key": "appGet",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "weiboGet",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "blackUser",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "_t",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "https://service.account.weibo.com/aj/reportspamobile?__rnd=1561132812616",
+					"protocol": "https",
+					"host": [
+						"service",
+						"account",
+						"weibo",
+						"com"
+					],
+					"path": [
+						"aj",
+						"reportspamobile"
+					],
+					"query": [
+						{
+							"key": "__rnd",
+							"value": "1561132812616",
+							"description": "时间戳，毫秒单位"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "微博举报结果处理情况",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Origin",
+						"value": "https://service.account.weibo.com",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Referer",
+						"value": "https://service.account.weibo.com/supervisor/host",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Mobile Safari/537.36",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "action",
+							"value": "statistics",
+							"type": "text"
+						},
+						{
+							"key": "time",
+							"value": "201906",
+							"description": "根据月份查询",
+							"type": "text"
+						},
+						{
+							"key": "_t",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "https://service.account.weibo.com/aj/supervisor/statistics?",
+					"protocol": "https",
+					"host": [
+						"service",
+						"account",
+						"weibo",
+						"com"
+					],
+					"path": [
+						"aj",
+						"supervisor",
+						"statistics"
+					],
+					"query": [
+						{
+							"key": "__rnd",
+							"value": "1561134776777",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取用户信息",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://m.weibo.cn/profile/info?uid=5869499623",
+					"protocol": "https",
+					"host": [
+						"m",
+						"weibo",
+						"cn"
+					],
+					"path": [
+						"profile",
+						"info"
+					],
+					"query": [
+						{
+							"key": "uid",
+							"value": "5869499623"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "微博关注的人的最新微博",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "MWeibo-Pwa",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": "https://m.weibo.cn/",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Mobile Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					},
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "6ec6c3",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://m.weibo.cn/feed/friends?",
+					"protocol": "https",
+					"host": [
+						"m",
+						"weibo",
+						"cn"
+					],
+					"path": [
+						"feed",
+						"friends"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "微博热门最新微博",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://m.weibo.cn/api/container/getIndex?containerid=102803_ctg1_7978_-_ctg1_7978&openApp=0&since_id=1",
+					"protocol": "https",
+					"host": [
+						"m",
+						"weibo",
+						"cn"
+					],
+					"path": [
+						"api",
+						"container",
+						"getIndex"
+					],
+					"query": [
+						{
+							"key": "containerid",
+							"value": "102803_ctg1_7978_-_ctg1_7978"
+						},
+						{
+							"key": "openApp",
+							"value": "0"
+						},
+						{
+							"key": "since_id",
+							"value": "1",
+							"description": "分页"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
