@@ -7,23 +7,23 @@ public class NumberDisplayStrategyBean {
      * display_text : 100万+
      */
 
-    private int apply_scenario_flag;
-    private int display_text_min_number;
+    private String apply_scenario_flag;
+    private String display_text_min_number;
     private String display_text;
 
-    public int getApply_scenario_flag() {
+    public String getApply_scenario_flag() {
         return apply_scenario_flag;
     }
 
-    public void setApply_scenario_flag(int apply_scenario_flag) {
+    public void setApply_scenario_flag(String apply_scenario_flag) {
         this.apply_scenario_flag = apply_scenario_flag;
     }
 
-    public int getDisplay_text_min_number() {
+    public String getDisplay_text_min_number() {
         return display_text_min_number;
     }
 
-    public void setDisplay_text_min_number(int display_text_min_number) {
+    public void setDisplay_text_min_number(String display_text_min_number) {
         this.display_text_min_number = display_text_min_number;
     }
 

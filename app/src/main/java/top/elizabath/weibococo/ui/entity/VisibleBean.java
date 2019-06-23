@@ -6,22 +6,22 @@ public class VisibleBean {
      * list_id : 0
      */
 
-    private int type;
-    private int list_id;
+    private String type;
+    private String list_id;
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public int getList_id() {
+    public String getList_id() {
         return list_id;
     }
 
-    public void setList_id(int list_id) {
+    public void setList_id(String list_id) {
         this.list_id = list_id;
     }
 }

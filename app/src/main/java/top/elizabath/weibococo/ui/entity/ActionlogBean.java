@@ -9,17 +9,17 @@ public class ActionlogBean {
      * fid : 100103type=61&q=百度云&t=0
      */
 
-    private int act_code;
+    private String act_code;
     private String ext;
     private String luicode;
     private String uicode;
     private String fid;
 
-    public int getAct_code() {
+    public String getAct_code() {
         return act_code;
     }
 
-    public void setAct_code(int act_code) {
+    public void setAct_code(String act_code) {
         this.act_code = act_code;
     }
 

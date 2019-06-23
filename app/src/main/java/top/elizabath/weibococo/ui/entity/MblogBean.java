@@ -56,7 +56,7 @@ public class MblogBean {
      * can_edit: 能否被编辑
      */
     private boolean can_edit;
-    private int show_additional_indication;
+    private String show_additional_indication;
     /**
      * text: 微博列表显示内容
      */
@@ -64,7 +64,7 @@ public class MblogBean {
     /**
      * textLength: 微博内容长度
      */
-    private int textLength;
+    private String textLength;
     /**
      * source: 微博来源，如：来自Iphone客户端
      */
@@ -72,7 +72,7 @@ public class MblogBean {
     private boolean favorited;
     private String pic_types;
     private boolean is_paid;
-    private int mblog_vip_type;
+    private String mblog_vip_type;
     /**
      * user: 用户信息
      */
@@ -80,17 +80,17 @@ public class MblogBean {
     /**
      * reposts_count: 转发数量统计
      */
-    private int reposts_count;
+    private String reposts_count;
     /**
      * comments_count: 评论数量统计
      */
-    private int comments_count;
+    private String comments_count;
     /**
      * attitudes_count: 点赞数量统计
      */
-    private int attitudes_count;
+    private String attitudes_count;
 
-    private int pending_approval_count;
+    private String pending_approval_count;
     /**
      * isLongText: 是否为长微博
      */
@@ -99,23 +99,23 @@ public class MblogBean {
      * longText: 如果为长微博，此项生效，里边内容为微博内容
      */
     private LongTextBean longText;
-    private int reward_exhibition_type;
-    private int hide_flag;
+    private String reward_exhibition_type;
+    private String hide_flag;
     private VisibleBean visible;
-    private int mblogtype;
+    private String mblogtype;
     private String rid;
-    private int more_info_type;
-    private int extern_safe;
+    private String more_info_type;
+    private String extern_safe;
     private NumberDisplayStrategyBean number_display_strategy;
-    private int content_auth;
-    private int status;
+    private String content_auth;
+    private String status;
     private String digit_attr;
     private String dispatch_ctrl;
     private String kwfilter_pass;
     private String itemid;
     private String analysis_extra;
-    private int weibo_position;
-    private int show_attitude_bar;
+    private String weibo_position;
+    private String show_attitude_bar;
     /**
      * page_info: 微博视频或微博故事或图片内容
      */
@@ -162,11 +162,11 @@ public class MblogBean {
         this.can_edit = can_edit;
     }
 
-    public int getShow_additional_indication() {
+    public String getShow_additional_indication() {
         return show_additional_indication;
     }
 
-    public void setShow_additional_indication(int show_additional_indication) {
+    public void setShow_additional_indication(String show_additional_indication) {
         this.show_additional_indication = show_additional_indication;
     }
 
@@ -178,11 +178,11 @@ public class MblogBean {
         this.text = text;
     }
 
-    public int getTextLength() {
+    public String getTextLength() {
         return textLength;
     }
 
-    public void setTextLength(int textLength) {
+    public void setTextLength(String textLength) {
         this.textLength = textLength;
     }
 
@@ -218,11 +218,11 @@ public class MblogBean {
         this.is_paid = is_paid;
     }
 
-    public int getMblog_vip_type() {
+    public String getMblog_vip_type() {
         return mblog_vip_type;
     }
 
-    public void setMblog_vip_type(int mblog_vip_type) {
+    public void setMblog_vip_type(String mblog_vip_type) {
         this.mblog_vip_type = mblog_vip_type;
     }
 
@@ -234,35 +234,35 @@ public class MblogBean {
         this.user = user;
     }
 
-    public int getReposts_count() {
+    public String getReposts_count() {
         return reposts_count;
     }
 
-    public void setReposts_count(int reposts_count) {
+    public void setReposts_count(String reposts_count) {
         this.reposts_count = reposts_count;
     }
 
-    public int getComments_count() {
+    public String getComments_count() {
         return comments_count;
     }
 
-    public void setComments_count(int comments_count) {
+    public void setComments_count(String comments_count) {
         this.comments_count = comments_count;
     }
 
-    public int getAttitudes_count() {
+    public String getAttitudes_count() {
         return attitudes_count;
     }
 
-    public void setAttitudes_count(int attitudes_count) {
+    public void setAttitudes_count(String attitudes_count) {
         this.attitudes_count = attitudes_count;
     }
 
-    public int getPending_approval_count() {
+    public String getPending_approval_count() {
         return pending_approval_count;
     }
 
-    public void setPending_approval_count(int pending_approval_count) {
+    public void setPending_approval_count(String pending_approval_count) {
         this.pending_approval_count = pending_approval_count;
     }
 
@@ -282,19 +282,19 @@ public class MblogBean {
         this.longText = longText;
     }
 
-    public int getReward_exhibition_type() {
+    public String getReward_exhibition_type() {
         return reward_exhibition_type;
     }
 
-    public void setReward_exhibition_type(int reward_exhibition_type) {
+    public void setReward_exhibition_type(String reward_exhibition_type) {
         this.reward_exhibition_type = reward_exhibition_type;
     }
 
-    public int getHide_flag() {
+    public String getHide_flag() {
         return hide_flag;
     }
 
-    public void setHide_flag(int hide_flag) {
+    public void setHide_flag(String hide_flag) {
         this.hide_flag = hide_flag;
     }
 
@@ -306,11 +306,11 @@ public class MblogBean {
         this.visible = visible;
     }
 
-    public int getMblogtype() {
+    public String getMblogtype() {
         return mblogtype;
     }
 
-    public void setMblogtype(int mblogtype) {
+    public void setMblogtype(String mblogtype) {
         this.mblogtype = mblogtype;
     }
 
@@ -322,19 +322,19 @@ public class MblogBean {
         this.rid = rid;
     }
 
-    public int getMore_info_type() {
+    public String getMore_info_type() {
         return more_info_type;
     }
 
-    public void setMore_info_type(int more_info_type) {
+    public void setMore_info_type(String more_info_type) {
         this.more_info_type = more_info_type;
     }
 
-    public int getExtern_safe() {
+    public String getExtern_safe() {
         return extern_safe;
     }
 
-    public void setExtern_safe(int extern_safe) {
+    public void setExtern_safe(String extern_safe) {
         this.extern_safe = extern_safe;
     }
 
@@ -346,19 +346,19 @@ public class MblogBean {
         this.number_display_strategy = number_display_strategy;
     }
 
-    public int getContent_auth() {
+    public String getContent_auth() {
         return content_auth;
     }
 
-    public void setContent_auth(int content_auth) {
+    public void setContent_auth(String content_auth) {
         this.content_auth = content_auth;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -402,19 +402,19 @@ public class MblogBean {
         this.analysis_extra = analysis_extra;
     }
 
-    public int getWeibo_position() {
+    public String getWeibo_position() {
         return weibo_position;
     }
 
-    public void setWeibo_position(int weibo_position) {
+    public void setWeibo_position(String weibo_position) {
         this.weibo_position = weibo_position;
     }
 
-    public int getShow_attitude_bar() {
+    public String getShow_attitude_bar() {
         return show_attitude_bar;
     }
 
-    public void setShow_attitude_bar(int show_attitude_bar) {
+    public void setShow_attitude_bar(String show_attitude_bar) {
         this.show_attitude_bar = show_attitude_bar;
     }
 

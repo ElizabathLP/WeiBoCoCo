@@ -23,13 +23,13 @@ public class CardlistInfoBean {
     private String v_p;
     private String containerid;
     private String title_top;
-    private int total;
-    private int show_style;
-    private int starttime;
-    private int can_shared;
+    private String total;
+    private String show_style;
+    private String starttime;
+    private String can_shared;
     private String page_size;
     private String bubble_text;
-    private int page;
+    private String page;
     private List<?> cardlist_menus;
     private List<CardlistHeadCardsBean> cardlist_head_cards;
     private List<?> toolbar_menus;
@@ -59,35 +59,35 @@ public class CardlistInfoBean {
         this.title_top = title_top;
     }
 
-    public int getTotal() {
+    public String getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(String total) {
         this.total = total;
     }
 
-    public int getShow_style() {
+    public String getShow_style() {
         return show_style;
     }
 
-    public void setShow_style(int show_style) {
+    public void setShow_style(String show_style) {
         this.show_style = show_style;
     }
 
-    public int getStarttime() {
+    public String getStarttime() {
         return starttime;
     }
 
-    public void setStarttime(int starttime) {
+    public void setStarttime(String starttime) {
         this.starttime = starttime;
     }
 
-    public int getCan_shared() {
+    public String getCan_shared() {
         return can_shared;
     }
 
-    public void setCan_shared(int can_shared) {
+    public void setCan_shared(String can_shared) {
         this.can_shared = can_shared;
     }
 
@@ -107,11 +107,11 @@ public class CardlistInfoBean {
         this.bubble_text = bubble_text;
     }
 
-    public int getPage() {
+    public String getPage() {
         return page;
     }
 
-    public void setPage(int page) {
+    public void setPage(String page) {
         this.page = page;
     }
 

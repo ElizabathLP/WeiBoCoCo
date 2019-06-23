@@ -42,18 +42,18 @@ public class UserBean {
      * profile_url: 个人微博页面
      */
     private String profile_url;
-    private int statuses_count;
+    private String statuses_count;
     private boolean verified;
-    private int verified_type;
+    private String verified_type;
     private boolean close_blue_v;
     /**
      * description: 个人简介
      */
     private String description;
     private String gender;
-    private int mbtype;
-    private int urank;
-    private int mbrank;
+    private String mbtype;
+    private String urank;
+    private String mbrank;
     private boolean follow_me;
     /**
      * following：是否正在关注此人
@@ -62,11 +62,11 @@ public class UserBean {
     /**
      * followers_count：关注数
      */
-    private int followers_count;
+    private String followers_count;
     /**
      * follow_count：粉丝数
      */
-    private int follow_count;
+    private String follow_count;
     /**
      * cover_image_phone：主页背景图
      */
@@ -114,11 +114,11 @@ public class UserBean {
         this.profile_url = profile_url;
     }
 
-    public int getStatuses_count() {
+    public String getStatuses_count() {
         return statuses_count;
     }
 
-    public void setStatuses_count(int statuses_count) {
+    public void setStatuses_count(String statuses_count) {
         this.statuses_count = statuses_count;
     }
 
@@ -130,11 +130,11 @@ public class UserBean {
         this.verified = verified;
     }
 
-    public int getVerified_type() {
+    public String getVerified_type() {
         return verified_type;
     }
 
-    public void setVerified_type(int verified_type) {
+    public void setVerified_type(String verified_type) {
         this.verified_type = verified_type;
     }
 
@@ -162,27 +162,27 @@ public class UserBean {
         this.gender = gender;
     }
 
-    public int getMbtype() {
+    public String getMbtype() {
         return mbtype;
     }
 
-    public void setMbtype(int mbtype) {
+    public void setMbtype(String mbtype) {
         this.mbtype = mbtype;
     }
 
-    public int getUrank() {
+    public String getUrank() {
         return urank;
     }
 
-    public void setUrank(int urank) {
+    public void setUrank(String urank) {
         this.urank = urank;
     }
 
-    public int getMbrank() {
+    public String getMbrank() {
         return mbrank;
     }
 
-    public void setMbrank(int mbrank) {
+    public void setMbrank(String mbrank) {
         this.mbrank = mbrank;
     }
 
@@ -202,19 +202,19 @@ public class UserBean {
         this.following = following;
     }
 
-    public int getFollowers_count() {
+    public String getFollowers_count() {
         return followers_count;
     }
 
-    public void setFollowers_count(int followers_count) {
+    public void setFollowers_count(String followers_count) {
         this.followers_count = followers_count;
     }
 
-    public int getFollow_count() {
+    public String getFollow_count() {
         return follow_count;
     }
 
-    public void setFollow_count(int follow_count) {
+    public void setFollow_count(String follow_count) {
         this.follow_count = follow_count;
     }
 

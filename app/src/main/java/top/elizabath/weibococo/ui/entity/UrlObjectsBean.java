@@ -25,16 +25,16 @@ public class UrlObjectsBean {
     private String object_id;
     private InfoBean info;
     private ObjectBeanX object;
-    private int like_count;
+    private String like_count;
     private boolean isActionType;
-    private int follower_count;
-    private int asso_like_count;
+    private String follower_count;
+    private String asso_like_count;
     private boolean card_info_un_integrity;
-    private int super_topic_status_count;
-    private int super_topic_photo_count;
-    private int search_topic_count;
-    private int search_topic_read_count;
-    private int play_count;
+    private String super_topic_status_count;
+    private String super_topic_photo_count;
+    private String search_topic_count;
+    private String search_topic_read_count;
+    private String play_count;
     private boolean is_follow_object_author;
 
     public String getUrl_ori() {
@@ -69,11 +69,11 @@ public class UrlObjectsBean {
         this.object = object;
     }
 
-    public int getLike_count() {
+    public String getLike_count() {
         return like_count;
     }
 
-    public void setLike_count(int like_count) {
+    public void setLike_count(String like_count) {
         this.like_count = like_count;
     }
 
@@ -85,19 +85,19 @@ public class UrlObjectsBean {
         this.isActionType = isActionType;
     }
 
-    public int getFollower_count() {
+    public String getFollower_count() {
         return follower_count;
     }
 
-    public void setFollower_count(int follower_count) {
+    public void setFollower_count(String follower_count) {
         this.follower_count = follower_count;
     }
 
-    public int getAsso_like_count() {
+    public String getAsso_like_count() {
         return asso_like_count;
     }
 
-    public void setAsso_like_count(int asso_like_count) {
+    public void setAsso_like_count(String asso_like_count) {
         this.asso_like_count = asso_like_count;
     }
 
@@ -109,43 +109,43 @@ public class UrlObjectsBean {
         this.card_info_un_integrity = card_info_un_integrity;
     }
 
-    public int getSuper_topic_status_count() {
+    public String getSuper_topic_status_count() {
         return super_topic_status_count;
     }
 
-    public void setSuper_topic_status_count(int super_topic_status_count) {
+    public void setSuper_topic_status_count(String super_topic_status_count) {
         this.super_topic_status_count = super_topic_status_count;
     }
 
-    public int getSuper_topic_photo_count() {
+    public String getSuper_topic_photo_count() {
         return super_topic_photo_count;
     }
 
-    public void setSuper_topic_photo_count(int super_topic_photo_count) {
+    public void setSuper_topic_photo_count(String super_topic_photo_count) {
         this.super_topic_photo_count = super_topic_photo_count;
     }
 
-    public int getSearch_topic_count() {
+    public String getSearch_topic_count() {
         return search_topic_count;
     }
 
-    public void setSearch_topic_count(int search_topic_count) {
+    public void setSearch_topic_count(String search_topic_count) {
         this.search_topic_count = search_topic_count;
     }
 
-    public int getSearch_topic_read_count() {
+    public String getSearch_topic_read_count() {
         return search_topic_read_count;
     }
 
-    public void setSearch_topic_read_count(int search_topic_read_count) {
+    public void setSearch_topic_read_count(String search_topic_read_count) {
         this.search_topic_read_count = search_topic_read_count;
     }
 
-    public int getPlay_count() {
+    public String getPlay_count() {
         return play_count;
     }
 
-    public void setPlay_count(int play_count) {
+    public void setPlay_count(String play_count) {
         this.play_count = play_count;
     }
 

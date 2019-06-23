@@ -28,7 +28,7 @@ public class ObjectBean {
     private String display_name;
     private String url;
     private SlideCoverBean slide_cover;
-    private int share_type;
+    private String share_type;
     private long update_at;
     private String id;
     private String author_mid;
@@ -93,11 +93,11 @@ public class ObjectBean {
         this.slide_cover = slide_cover;
     }
 
-    public int getShare_type() {
+    public String getShare_type() {
         return share_type;
     }
 
-    public void setShare_type(int share_type) {
+    public void setShare_type(String share_type) {
         this.share_type = share_type;
     }
 

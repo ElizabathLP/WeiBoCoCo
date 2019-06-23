@@ -20,8 +20,8 @@ public class ChannelListBean {
      * name: 分类名
      */
     private String name;
-    private int default_add;
-    private int must_show;
+    private String default_add;
+    private String must_show;
     private String scheme;
     private String containerid;
 
@@ -41,19 +41,19 @@ public class ChannelListBean {
         this.name = name;
     }
 
-    public int getDefault_add() {
+    public String getDefault_add() {
         return default_add;
     }
 
-    public void setDefault_add(int default_add) {
+    public void setDefault_add(String default_add) {
         this.default_add = default_add;
     }
 
-    public int getMust_show() {
+    public String getMust_show() {
         return must_show;
     }
 
-    public void setMust_show(int must_show) {
+    public void setMust_show(String must_show) {
         this.must_show = must_show;
     }
 

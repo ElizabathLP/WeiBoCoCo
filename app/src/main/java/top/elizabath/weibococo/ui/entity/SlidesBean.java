@@ -17,8 +17,8 @@ public class SlidesBean {
     private long owner_id;
     private String nickname;
     private long expire_time;
-    private int segment_duration;
-    private int segment_type;
+    private String segment_duration;
+    private String segment_type;
     private String avatar;
     private long segment_id;
     private String url;
@@ -55,19 +55,19 @@ public class SlidesBean {
         this.expire_time = expire_time;
     }
 
-    public int getSegment_duration() {
+    public String getSegment_duration() {
         return segment_duration;
     }
 
-    public void setSegment_duration(int segment_duration) {
+    public void setSegment_duration(String segment_duration) {
         this.segment_duration = segment_duration;
     }
 
-    public int getSegment_type() {
+    public String getSegment_type() {
         return segment_type;
     }
 
-    public void setSegment_type(int segment_type) {
+    public void setSegment_type(String segment_type) {
         this.segment_type = segment_type;
     }
 

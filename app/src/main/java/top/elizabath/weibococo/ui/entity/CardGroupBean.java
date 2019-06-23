@@ -17,15 +17,15 @@ public class CardGroupBean {
     /**
      * 卡片类型：9
      */
-    private int card_type;
+    private String card_type;
     /**
      * 类型名称：微博
      */
     private String card_type_name;
     private String itemid;
     private ActionlogBean actionlog;
-    private int display_arrow;
-    private int show_type;
+    private String display_arrow;
+    private String show_type;
     /**
      * 此条微博携带的信息
      */
@@ -35,11 +35,11 @@ public class CardGroupBean {
      */
     private String scheme;
 
-    public int getCard_type() {
+    public String getCard_type() {
         return card_type;
     }
 
-    public void setCard_type(int card_type) {
+    public void setCard_type(String card_type) {
         this.card_type = card_type;
     }
 
@@ -67,19 +67,19 @@ public class CardGroupBean {
         this.actionlog = actionlog;
     }
 
-    public int getDisplay_arrow() {
+    public String getDisplay_arrow() {
         return display_arrow;
     }
 
-    public void setDisplay_arrow(int display_arrow) {
+    public void setDisplay_arrow(String display_arrow) {
         this.display_arrow = display_arrow;
     }
 
-    public int getShow_type() {
+    public String getShow_type() {
         return show_type;
     }
 
-    public void setShow_type(int show_type) {
+    public void setShow_type(String show_type) {
         this.show_type = show_type;
     }
 

@@ -10,16 +10,16 @@ public class StoryBean {
      * type : 6
      */
 
-    private int bizType;
+    private String bizType;
     private String story_id;
-    private int type;
+    private String type;
     private List<Long> segments_ids;
 
-    public int getBizType() {
+    public String getBizType() {
         return bizType;
     }
 
-    public void setBizType(int bizType) {
+    public void setBizType(String bizType) {
         this.bizType = bizType;
     }
 
@@ -31,11 +31,11 @@ public class StoryBean {
         this.story_id = story_id;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 

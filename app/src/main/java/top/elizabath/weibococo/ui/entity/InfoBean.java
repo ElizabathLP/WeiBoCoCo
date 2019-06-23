@@ -15,13 +15,13 @@ public class InfoBean {
 
     private String url_short;
     private String url_long;
-    private int type;
+    private String type;
     private boolean result;
     private String title;
     private String description;
-    private int last_modified;
-    private int transcode;
-    private int ext_status;
+    private String last_modified;
+    private String transcode;
+    private String ext_status;
 
     public String getUrl_short() {
         return url_short;
@@ -39,11 +39,11 @@ public class InfoBean {
         this.url_long = url_long;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -71,27 +71,27 @@ public class InfoBean {
         this.description = description;
     }
 
-    public int getLast_modified() {
+    public String getLast_modified() {
         return last_modified;
     }
 
-    public void setLast_modified(int last_modified) {
+    public void setLast_modified(String last_modified) {
         this.last_modified = last_modified;
     }
 
-    public int getTranscode() {
+    public String getTranscode() {
         return transcode;
     }
 
-    public void setTranscode(int transcode) {
+    public void setTranscode(String transcode) {
         this.transcode = transcode;
     }
 
-    public int getExt_status() {
+    public String getExt_status() {
         return ext_status;
     }
 
-    public void setExt_status(int ext_status) {
+    public void setExt_status(String ext_status) {
         this.ext_status = ext_status;
     }
 }

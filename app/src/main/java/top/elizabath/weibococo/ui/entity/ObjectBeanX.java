@@ -21,7 +21,7 @@ public class ObjectBeanX {
     private String containerid;
     private String object_domain_id;
     private String object_type;
-    private int safe_status;
+    private String safe_status;
     private String show_status;
     private String act_status;
     private String last_modified;
@@ -63,11 +63,11 @@ public class ObjectBeanX {
         this.object_type = object_type;
     }
 
-    public int getSafe_status() {
+    public String getSafe_status() {
         return safe_status;
     }
 
-    public void setSafe_status(int safe_status) {
+    public void setSafe_status(String safe_status) {
         this.safe_status = safe_status;
     }
 

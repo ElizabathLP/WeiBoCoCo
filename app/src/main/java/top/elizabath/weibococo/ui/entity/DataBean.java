@@ -15,7 +15,7 @@ public class DataBean {
      */
     private CardlistInfoBean cardlistInfo;
     private String scheme;
-    private int showAppTips;
+    private String showAppTips;
     /**
      * cards: wap页面下边的内容（用户发的微博）并非每一条
      */
@@ -37,11 +37,11 @@ public class DataBean {
         this.scheme = scheme;
     }
 
-    public int getShowAppTips() {
+    public String getShowAppTips() {
         return showAppTips;
     }
 
-    public void setShowAppTips(int showAppTips) {
+    public void setShowAppTips(String showAppTips) {
         this.showAppTips = showAppTips;
     }
 

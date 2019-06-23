@@ -7,15 +7,15 @@ public class ImageBean {
      * height : 1080
      */
 
-    private int width;
+    private String width;
     private String url;
-    private int height;
+    private String height;
 
-    public int getWidth() {
+    public String getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(String width) {
         this.width = width;
     }
 
@@ -27,11 +27,11 @@ public class ImageBean {
         this.url = url;
     }
 
-    public int getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 }
