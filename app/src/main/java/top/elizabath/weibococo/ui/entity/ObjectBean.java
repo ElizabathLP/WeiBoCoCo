@@ -23,7 +23,7 @@ public class ObjectBean {
 
     private ImageBean image;
     private String object_type;
-    private AuthorBean author;
+//    private AuthorBean author;
     private long mid;
     private String display_name;
     private String url;
@@ -53,13 +53,13 @@ public class ObjectBean {
         this.object_type = object_type;
     }
 
-    public AuthorBean getAuthor() {
-        return author;
-    }
+//    public AuthorBean getAuthor() {
+//        return author;
+//    }
 
-    public void setAuthor(AuthorBean author) {
-        this.author = author;
-    }
+//    public void setAuthor(AuthorBean author) {
+//        this.author = author;
+//    }
 
     public long getMid() {
         return mid;
