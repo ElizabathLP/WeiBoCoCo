@@ -1,7 +1,6 @@
 package top.elizabath.weibococo.ui.adapter;
 
 import android.content.Context;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,21 +15,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import java.util.List;
 
 import top.elizabath.weibococo.R;
-import top.elizabath.weibococo.ui.entity.CardGroupBean;
-import top.elizabath.weibococo.ui.entity.UserBean;
+import top.elizabath.weibococo.ui.entity.WeiBoBean;
+import top.elizabath.weibococo.ui.entity.WeiBoSearchResult;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> {
 
     private Context context;
-    private List<CardGroupBean> weiBoList;
+    private List<WeiBoBean> weiBoList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -52,7 +48,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         }
     }
 
-    public WeiBoAdapter(List<CardGroupBean> weiBoList){
+    public WeiBoAdapter(List<WeiBoBean> weiBoList){
         this.weiBoList = weiBoList;
     }
 
@@ -69,10 +65,10 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        CardGroupBean card = weiBoList.get(position);
+        WeiBoBean card = weiBoList.get(position);
         String html = card.getMblog().getText();
         String imgUrl = null;
-        UserBean user = card.getMblog().getUser();
+        WeiBoBean.MblogBean.UserBean user = card.getMblog().getUser();
         try{
             imgUrl = card.getMblog().getPage_info().getPage_pic().getUrl();
         }catch (Exception e){
