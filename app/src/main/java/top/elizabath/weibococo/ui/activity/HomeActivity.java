@@ -1,11 +1,14 @@
 package top.elizabath.weibococo.ui.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -20,13 +23,25 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import top.elizabath.weibococo.R;
 import top.elizabath.weibococo.ui.activity.login.LoginActivity;
+import top.elizabath.weibococo.ui.util.HttpUtil;
+import top.elizabath.weibococo.ui.view.SearchBarEditText;
 
 public class HomeActivity extends ActivityBase
-        implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +67,7 @@ public class HomeActivity extends ActivityBase
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        initView();
     }
 
     @Override
@@ -126,7 +142,41 @@ public class HomeActivity extends ActivityBase
         }
     }
 
-    public void getWeiBoList(){
+    public void getWeiBoList() {
+        LinkedHashMap<String,String> params = new LinkedHashMap<>();
+        params.put("containerid","100103type%3D61%26q%3D%E7%99%BE%E5%BA%A6%E4%BA%91%26t%3D0");
+        params.put("page_type","searchall");
+        params.put("page","1");
+        HttpUtil.sendOkHttpGetRequest("https://m.weibo.cn/api/container/getIndex",params, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // 异常处理
+            }
 
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // 返回数据
+            }
+        });
+    }
+
+    private void initView() {
+        SearchBarEditText search = findViewById(R.id.search_edit_text);
+        search.setOnDrawableLeftListener(new SearchBarEditText.OnDrawableLeftListener() {
+            @Override
+            public void onDrawableLeftClick() {
+                //左侧Drawable点击监听
+                RelativeLayout search_bar = findViewById(R.id.search_layout);
+                search_bar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "取消搜索", Toast.LENGTH_SHORT).show();
+            }
+        });
+        search.setOnDrawableRightListener(new SearchBarEditText.OnDrawableRightListener() {
+            @Override
+            public void onDrawableRightClick() {
+                //右侧Drawable点击监听
+                Toast.makeText(getApplicationContext(), "点击了右侧按钮", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
