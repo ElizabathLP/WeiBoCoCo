@@ -120,6 +120,9 @@ public class MblogBean {
      * page_info: 微博视频或微博故事或图片内容
      */
     private PageInfoBean page_info;
+    /**
+     * 此条微博bid，用于新页面打开等操作
+     */
     private String bid;
 
     public String getCreated_at() {

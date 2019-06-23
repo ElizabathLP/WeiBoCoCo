@@ -1,10 +1,12 @@
 package top.elizabath.weibococo.ui.adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import java.util.List;
 
 import top.elizabath.weibococo.R;
 import top.elizabath.weibococo.ui.entity.CardGroupBean;
+import top.elizabath.weibococo.ui.entity.UserBean;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -33,13 +36,19 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
 
         CardView cardView;
         ImageView weiBoImage;
-        TextView weiBoContent;
+        WebView weiBoContent;
+        ImageView weiBoHeadImage;
+        TextView weiBoUserName;
+        TextView weiBoMsg;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = (CardView) itemView;
             weiBoImage = itemView.findViewById(R.id.weiboImage);
             weiBoContent = itemView.findViewById(R.id.weiboContent);
+            weiBoHeadImage = itemView.findViewById(R.id.weiBoHeadImage);
+            weiBoUserName = itemView.findViewById(R.id.weiBoUserName);
+            weiBoMsg = itemView.findViewById(R.id.weiBoMsg);
         }
     }
 
@@ -59,26 +68,34 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         CardGroupBean card = weiBoList.get(position);
         String html = card.getMblog().getText();
         String imgUrl = null;
+        UserBean user = card.getMblog().getUser();
         try{
             imgUrl = card.getMblog().getPage_info().getPage_pic().getUrl();
         }catch (Exception e){
             Log.e(TAG, "微博图片资源不存在: ", e);
         }
-        Document doc = Jsoup.parse(html);
-        html = doc.select("body").text();
-        if (html.endsWith("全文")){
-            html = html.substring(0,html.lastIndexOf("全文"));
-        }
-        holder.weiBoContent.setText(html);
-        Log.d(TAG, "onBindViewHolder: "+imgUrl);
+//        Document doc = Jsoup.parse(html);
+//        html = doc.select("body").text();
+//        if (html.endsWith("全文")){
+//            html = html.substring(0,html.lastIndexOf("全文"));
+//        }
+        html = html.replace("src=\"//","src=\"https://");
+        html = html.replace("src=\\\"//","src=\\\"https://");
+        html = html.replace("<a href=\"/status/","<a href=\"https://m.weibo.cn/status/");
+        html = html.replace("<a href=\\\"/status/","<a href=\\\"https://m.weibo.cn/status/");
+        holder.weiBoContent.loadData(html,"text/html; charset=UTF-8", null);
+//        holder.weiBoContent.setText(Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY));
+        holder.weiBoUserName.setText(user.getScreen_name());
+        holder.weiBoMsg.setText(card.getMblog().getCreated_at()+"   来自 "+card.getMblog().getSource());
+        Glide.with(context).load(user.getProfile_image_url()).error(R.drawable.cat_my_king).into(holder.weiBoHeadImage);
         if (imgUrl!=null){
-            Glide.with(context).load(imgUrl).into(holder.weiBoImage);
-            return;
+            Glide.with(context).load(imgUrl).error(R.drawable.cat_my_king).into(holder.weiBoImage);
+            holder.weiBoImage.setVisibility(View.VISIBLE);
         }
-        Glide.with(context).load(R.drawable.cat_my_king).into(holder.weiBoImage);
     }
 
     @Override
