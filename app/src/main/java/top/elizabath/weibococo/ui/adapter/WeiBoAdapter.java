@@ -19,7 +19,6 @@ import java.util.List;
 
 import top.elizabath.weibococo.R;
 import top.elizabath.weibococo.ui.entity.WeiBoBean;
-import top.elizabath.weibococo.ui.entity.WeiBoSearchResult;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -74,15 +73,13 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         } catch (Exception e) {
             Log.e(TAG, "微博图片资源不存在: ", e);
         }
-        html = html.replace("src=\"//", "src=\"https://");
-        html = html.replace("src=\\\"//", "src=\\\"https://");
-        html = html.replace("<a href=\"/status/", "<a href=\"https://m.weibo.cn/status/");
-        html = html.replace("<a href=\\\"/status/", "<a href=\\\"https://m.weibo.cn/status/");
+        html = makeURL(html);
         holder.weiBoContent.loadData(html, "text/html; charset=UTF-8", null);
         holder.weiBoUserName.setText(user.getScreen_name());
         holder.weiBoMsg.setText(card.getMblog().getCreated_at() + "   来自 " + card.getMblog().getSource());
         Glide.with(context).load(user.getProfile_image_url()).error(R.drawable.cat_my_king).into(holder.weiBoHeadImage);
-        if (imgUrl != null) {
+        holder.weiBoImage.setVisibility(View.GONE);
+        if (imgUrl != null&&!"".equals(imgUrl.trim())) {
             Glide.with(context).load(imgUrl).error(R.drawable.cat_my_king).into(holder.weiBoImage);
             holder.weiBoImage.setVisibility(View.VISIBLE);
         }
@@ -93,4 +90,13 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         return weiBoList.size();
     }
 
+    private String makeURL(String html){
+        html = html.replace("src=\"//", "src=\"https://");
+        html = html.replace("src=\'//", "src=\'https://");
+        html = html.replace("src=\"http://", "src=\"https://");
+        html = html.replace("src=\'http://", "src=\'https://");
+        html = html.replace("<a href=\"/status/", "<a href=\"https://m.weibo.cn/status/");
+        html = html.replace("<a href=\'/status/", "<a href=\'https://m.weibo.cn/status/");
+        return html;
+    }
 }

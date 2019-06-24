@@ -53,8 +53,9 @@
         <ImageView
             android:id="@+id/weiboImage"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:scaleType="centerInside"
             android:visibility="gone"/>
     </LinearLayout>
 

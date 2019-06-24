@@ -1149,11 +1149,10 @@ public class WeiBoBean {
                     private String show_status;
                     private String act_status;
                     private String last_modified;
-                    private long timestamp;
-                    private long uuid;
+                    private String timestamp;
+                    private String uuid;
                     private String uuidstr;
                     private String activate_status;
-                    private ObjectBean object;
 
                     public String getObject_id() {
                         return object_id;
@@ -1219,19 +1218,19 @@ public class WeiBoBean {
                         this.last_modified = last_modified;
                     }
 
-                    public long getTimestamp() {
+                    public String getTimestamp() {
                         return timestamp;
                     }
 
-                    public void setTimestamp(long timestamp) {
+                    public void setTimestamp(String timestamp) {
                         this.timestamp = timestamp;
                     }
 
-                    public long getUuid() {
+                    public String getUuid() {
                         return uuid;
                     }
 
-                    public void setUuid(long uuid) {
+                    public void setUuid(String uuid) {
                         this.uuid = uuid;
                     }
 
@@ -1249,14 +1248,6 @@ public class WeiBoBean {
 
                     public void setActivate_status(String activate_status) {
                         this.activate_status = activate_status;
-                    }
-
-                    public ObjectBean getObject() {
-                        return object;
-                    }
-
-                    public void setObject(ObjectBean object) {
-                        this.object = object;
                     }
 
                     public static class ObjectBean {
@@ -1280,15 +1271,15 @@ public class WeiBoBean {
 
                         private ImageBean image;
                         private String object_type;
-                        private long mid;
+                        private String mid;
                         private String display_name;
                         private String url;
                         private SlideCoverBean slide_cover;
                         private String share_type;
-                        private long update_at;
+                        private String update_at;
                         private String id;
                         private String author_mid;
-                        private long create_at;
+                        private String create_at;
                         private StoryBean story;
                         private BizBean biz;
                         private String target_url;
@@ -1309,11 +1300,11 @@ public class WeiBoBean {
                             this.object_type = object_type;
                         }
 
-                        public long getMid() {
+                        public String getMid() {
                             return mid;
                         }
 
-                        public void setMid(long mid) {
+                        public void setMid(String mid) {
                             this.mid = mid;
                         }
 
@@ -1349,11 +1340,11 @@ public class WeiBoBean {
                             this.share_type = share_type;
                         }
 
-                        public long getUpdate_at() {
+                        public String getUpdate_at() {
                             return update_at;
                         }
 
-                        public void setUpdate_at(long update_at) {
+                        public void setUpdate_at(String update_at) {
                             this.update_at = update_at;
                         }
 
@@ -1373,11 +1364,11 @@ public class WeiBoBean {
                             this.author_mid = author_mid;
                         }
 
-                        public long getCreate_at() {
+                        public String getCreate_at() {
                             return create_at;
                         }
 
-                        public void setCreate_at(long create_at) {
+                        public void setCreate_at(String create_at) {
                             this.create_at = create_at;
                         }
 
@@ -1446,13 +1437,13 @@ public class WeiBoBean {
                              * id : 6569384476
                              */
 
-                            private long id;
+                            private String id;
 
-                            public long getId() {
+                            public String getId() {
                                 return id;
                             }
 
-                            public void setId(long id) {
+                            public void setId(String id) {
                                 this.id = id;
                             }
                         }
@@ -1481,29 +1472,29 @@ public class WeiBoBean {
                                  * url : http://wx2.sinaimg.cn/large/007aAt08ly8g3yj5etqymj319d1hdnl8.jpg
                                  */
 
-                                private long create_time;
-                                private long owner_id;
+                                private String create_time;
+                                private String owner_id;
                                 private String nickname;
-                                private long expire_time;
+                                private String expire_time;
                                 private String segment_duration;
                                 private String segment_type;
                                 private String avatar;
-                                private long segment_id;
+                                private String segment_id;
                                 private String url;
 
-                                public long getCreate_time() {
+                                public String getCreate_time() {
                                     return create_time;
                                 }
 
-                                public void setCreate_time(long create_time) {
+                                public void setCreate_time(String create_time) {
                                     this.create_time = create_time;
                                 }
 
-                                public long getOwner_id() {
+                                public String getOwner_id() {
                                     return owner_id;
                                 }
 
-                                public void setOwner_id(long owner_id) {
+                                public void setOwner_id(String owner_id) {
                                     this.owner_id = owner_id;
                                 }
 
@@ -1515,11 +1506,11 @@ public class WeiBoBean {
                                     this.nickname = nickname;
                                 }
 
-                                public long getExpire_time() {
+                                public String getExpire_time() {
                                     return expire_time;
                                 }
 
-                                public void setExpire_time(long expire_time) {
+                                public void setExpire_time(String expire_time) {
                                     this.expire_time = expire_time;
                                 }
 
@@ -1547,11 +1538,11 @@ public class WeiBoBean {
                                     this.avatar = avatar;
                                 }
 
-                                public long getSegment_id() {
+                                public String getSegment_id() {
                                     return segment_id;
                                 }
 
-                                public void setSegment_id(long segment_id) {
+                                public void setSegment_id(String segment_id) {
                                     this.segment_id = segment_id;
                                 }
 

@@ -2,6 +2,20 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('D:\\androidKey.jks')
+            storePassword '19971003'
+            keyPassword '19971003'
+            keyAlias = 'key0'
+        }
+        debug {
+            storeFile file('D:\\androidKey.jks')
+            storePassword '19971003'
+            keyAlias = 'key0'
+            keyPassword '19971003'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
     defaultConfig {
@@ -11,6 +25,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
@@ -42,4 +57,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'org.jsoup:jsoup:1.12.1'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-11'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-andx-11'
 }

@@ -1,12 +1,17 @@
 package top.elizabath.weibococo.ui.util;
 
+import android.util.Log;
+
 import java.util.LinkedHashMap;
 
+import okhttp3.CacheControl;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class HttpUtil {
 
@@ -24,6 +29,7 @@ public class HttpUtil {
                 builder.append(key).append("=").append(value).append("&");
             }
         }
+        builder.append("localtime").append("=").append(System.currentTimeMillis()).append("&");
         url = builder.toString();
         url = url.substring(0,url.lastIndexOf("&"));
         return url;
@@ -45,7 +51,11 @@ public class HttpUtil {
     public static void sendOkHttpGetRequest(String address, LinkedHashMap<String, String> params, LinkedHashMap<String, String> headers, okhttp3.Callback callback) {
         Request.Builder builder = new Request.Builder();
         builder = addRequestHeaders(headers,builder);
-        Request request = builder.url(generateGetUrl(address, params)).build();
+        String url = generateGetUrl(address, params);
+        Log.d(TAG, "sendOkHttpGetRequest: "+url);
+        CacheControl cache = new CacheControl.Builder().noCache()
+                .build();
+        Request request = builder.url(url).cacheControl(cache).build();
         client.newCall(request).enqueue(callback);
     }
 
