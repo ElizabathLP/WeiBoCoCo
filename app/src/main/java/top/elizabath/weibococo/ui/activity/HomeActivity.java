@@ -67,7 +67,6 @@ public class HomeActivity extends ActivityBase
     private NavigationView navigationView;
     private FloatingActionButton fab;
     private RecyclerView weibolist;
-    private GridLayoutManager layoutManager;
     private RefreshLayout swipeRefresh;
     private WeiBoAdapter weiBoAdapter;
     private List<WeiBoBean> weiBoList = new ArrayList<>();
@@ -79,7 +78,7 @@ public class HomeActivity extends ActivityBase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initView();
-        layoutManager = new GridLayoutManager(this, 1);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         swipeRefresh.autoRefreshAnimationOnly();
         searchPopularWeiBo(nowPage,false);
         weibolist.setLayoutManager(layoutManager);
