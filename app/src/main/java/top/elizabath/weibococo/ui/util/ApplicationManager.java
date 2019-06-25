@@ -15,6 +15,7 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.footer.FalsifyFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
+import org.litepal.LitePal;
 import top.elizabath.weibococo.R;
 
 public class ApplicationManager extends Application {
@@ -43,6 +44,8 @@ public class ApplicationManager extends Application {
 
     @Override
     public void onCreate() {
+        context = getApplicationContext();
+        LitePal.initialize(context);
         super.onCreate();
     }
 

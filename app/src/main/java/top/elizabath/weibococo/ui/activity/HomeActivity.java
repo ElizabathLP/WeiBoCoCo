@@ -48,10 +48,7 @@ import top.elizabath.weibococo.ui.adapter.WeiBoAdapter;
 import top.elizabath.weibococo.ui.entity.PopularWeiBoResult;
 import top.elizabath.weibococo.ui.entity.WeiBoBean;
 import top.elizabath.weibococo.ui.entity.WeiBoSearchResult;
-import top.elizabath.weibococo.ui.util.GsonUtil;
-import top.elizabath.weibococo.ui.util.HttpUtil;
-import top.elizabath.weibococo.ui.util.ToastUtil;
-import top.elizabath.weibococo.ui.util.URLHelper;
+import top.elizabath.weibococo.ui.util.*;
 import top.elizabath.weibococo.ui.view.SearchBarEditText;
 
 public class HomeActivity extends ActivityBase
@@ -222,7 +219,7 @@ public class HomeActivity extends ActivityBase
     }
 
     public void getWeiBoList(LinkedHashMap<String, String> params, LinkedHashMap<String, String> headers, Class clazz, boolean isLoadMore) {
-        HttpUtil.sendOkHttpGetRequest("https://m.weibo.cn/api/container/getIndex", params, headers, new okhttp3.Callback() {
+        HttpUtil.sendOkHttpGetRequest(KEYManage.WEIBO_SEARCH_URL, params, headers, new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 // 异常处理

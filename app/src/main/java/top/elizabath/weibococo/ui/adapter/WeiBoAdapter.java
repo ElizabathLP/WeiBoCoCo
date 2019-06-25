@@ -73,9 +73,14 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         }
         View view = LayoutInflater.from(context).inflate(R.layout.weibo_item, parent, false);
         final ViewHolder holder = new ViewHolder(view);
+
         holder.cardView.setOnClickListener(weibo -> {
             // 点击跳转详情按钮
+            int position = holder.getAdapterPosition();
+            WeiBoBean weiBo = weiBoList.get(position);
+            String bid = weiBo.getMblog().getBid();
             Intent intent = new Intent(context, WeiBoDetailActivity.class);
+            intent.putExtra("bid",bid);
             context.startActivity(intent);
         });
         holder.cardView.setOnLongClickListener(view1 -> {
