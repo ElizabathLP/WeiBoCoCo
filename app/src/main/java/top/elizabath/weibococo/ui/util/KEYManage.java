@@ -139,4 +139,5 @@ public class KEYManage {
     public static int COMPLAINT_CATEGORY_FRAUD_MESSAGE_TYPE_BETTING_MONEY_BACK_FRAUD = 2206;
     public static int COMPLAINT_CATEGORY_FRAUD_MESSAGE_TYPE_OTHERS = 2207;
 
+    public static String WEIBO_REPORT_URL = "https://service.account.weibo.com/aj/reportspamobile?__rnd=";
 }

@@ -1,6 +1,8 @@
 package top.elizabath.weibococo.ui.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import top.elizabath.weibococo.R;
+import top.elizabath.weibococo.ui.entity.PopularWeiBoResult;
 import top.elizabath.weibococo.ui.entity.WeiBoBean;
-import top.elizabath.weibococo.ui.util.ToastUtil;
+import top.elizabath.weibococo.ui.entity.WeiBoReportMsg;
+import top.elizabath.weibococo.ui.util.*;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -69,18 +78,39 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         });
         holder.weiboReport.setOnClickListener(report -> {
             // 点击发起举报请求
-            int position = holder.getAdapterPosition();
-            WeiBoBean weiBo = weiBoList.get(position);
-            String weiBoId = weiBo.getMblog().getId();
-            String nowTime = String.valueOf(System.currentTimeMillis());
-            if (StringUtils.isBlank(weiBoId)){
-                ToastUtil.showToast(context,"举报失败，微博ID获取失败");
-                return;
-            }
-            if (StringUtils.isBlank(nowTime)){
-                ToastUtil.showToast(context,"举报失败，当前时间获取失败");
-                return;
-            }
+
+            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+            dialog.setTitle("确定举报此条微博？");
+            dialog.setMessage("系统将以你的名义举报此条微博");
+            dialog.setCancelable(true);
+            dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                //确定按钮
+                int position = holder.getAdapterPosition();
+                WeiBoBean weiBo = weiBoList.get(position);
+                String weiBoId = weiBo.getMblog().getId();
+                String nowTime = String.valueOf(System.currentTimeMillis());
+                //todo 之后换成登录用户ID
+                String reporterId = "3264859587";
+                String weiBoOwnerId = weiBo.getMblog().getUser().getId();
+                if (StringUtils.isBlank(weiBoId)) {
+                    ToastUtil.showToast(context, "举报失败，微博ID获取失败");
+                    return;
+                }
+                if (StringUtils.isBlank(nowTime)) {
+                    ToastUtil.showToast(context, "举报失败，当前时间获取失败");
+                    return;
+                }
+                if (StringUtils.isBlank(weiBoOwnerId)){
+                    ToastUtil.showToast(context, "举报失败，此条微博所有者获取失败");
+                    return;
+                }
+                reportWeiBo(KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE,KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE_TYPE_SELL_YELLOW_RESOURCES,nowTime,weiBoId,reporterId,weiBoOwnerId);
+            });
+            dialog.setNegativeButton("Cancel", (dialogInterface, i) -> {
+                // 取消按钮
+                ToastUtil.showToast(context,"取消举报");
+            });
+            dialog.show();
         });
         return holder;
     }
@@ -122,5 +152,44 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         html = html.replace("<a href=\"/status/", "<a href=\"https://m.weibo.cn/status/");
         html = html.replace("<a href=\'/status/", "<a href=\'https://m.weibo.cn/status/");
         return html;
+    }
+
+    private void reportWeiBo(int category, int tag_id,String nowTime, String weiBoId, String reporterId, String weiBoOwnerId){
+        LinkedHashMap<String, String> params = new LinkedHashMap<>();
+        params.put("category", String.valueOf(category));
+        params.put("tag_id", String.valueOf(tag_id));
+        params.put("type", "1");
+        params.put("rid", weiBoId);
+        params.put("uid", reporterId);
+        params.put("r_uid", weiBoOwnerId);
+        params.put("getrid", weiBoId);
+        LinkedHashMap<String, String> head = new LinkedHashMap<>();
+        head.put("Host", "service.account.weibo.com");
+        head.put("Connection", "keep-alive");
+        head.put("Content-Length", "158");
+        head.put("Origin", "https://service.account.weibo.com");
+        head.put("X-Requested-With", "XMLHttpRequest");
+        head.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36");
+        head.put("Content-Type", "application/x-www-form-urlencoded");
+        head.put("Accept", "*/*");
+        head.put("Referer", "https://service.account.weibo.com/reportspamobile?rid="+weiBoId+"&type=1&from=20000");
+        head.put("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
+        head.put("Cookie", "ALF="+nowTime.substring(0,nowTime.length()-3)+"; SUB=_2A25wFjENDeRhGeVM7VYZ9SfJwzuIHXVT-V9FrDV8PUJbkNAKLRD1kW1NTPrCAGTYHesbiDUFJ7n31LmaaQgWBNxu; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WF4Nzr5EBRaFEJ9ybQXnj1U5JpX5oz75NHD95Q0eoqX1h-4SKnNWs4DqcjHBgfbIPxDdcRLxKBLBonLBo9zdcp.; S_ACCOUNT-G0=83b4ce5166df2ff731e23703d58dea95");
+        HttpUtil.sendOkHttpPostRequest(KEYManage.WEIBO_REPORT_URL + nowTime, params, head, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // 失败
+                Log.d(TAG, "onResponse: "+"举报失败，请检查网络设置");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // 成功
+                String responseData = response.body().string();
+                WeiBoReportMsg result = GsonUtil.fromJson(responseData, WeiBoReportMsg.class);
+                Log.d(TAG, "onResponse: "+result.getMsg());
+            }
+        });
+
     }
 }
