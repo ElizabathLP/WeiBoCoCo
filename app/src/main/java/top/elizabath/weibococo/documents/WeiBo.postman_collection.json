@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2152d11a-da34-49de-af1d-d692822685fe",
+		"_postman_id": "60f26d50-0d13-4bf3-a38c-33be46883aa9",
 		"name": "WeiBo",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -129,11 +129,8 @@
 		},
 		{
 			"name": "微博实时搜索接口",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Accept",
@@ -143,12 +140,14 @@
 					{
 						"key": "MWeibo-Pwa",
 						"value": "1",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					},
 					{
 						"key": "Referer",
 						"value": "https://m.weibo.cn/search?containerid=100103type%3D1%26q%3D%E7%99%BE%E5%BA%A6%E4%BA%91",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					},
 					{
 						"key": "User-Agent",
@@ -158,17 +157,22 @@
 					{
 						"key": "X-Requested-With",
 						"value": "XMLHttpRequest",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					},
 					{
 						"key": "X-XSRF-TOKEN",
 						"value": "1a727e",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D61%26q%3D%E7%99%BE%E5%BA%A6%E4%BA%91%26t%3D0&page_type=searchall&page=1",
+					"raw": "https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D61%26q%3D%e9%82%93%e4%bc%a6+x+%e6%97%b6%e5%b0%9a%e5%81%a5%e5%ba%b7+%7c+%e4%b8%83%e6%9c%88%e5%88%8a%e5%b0%81%e9%9d%a2%e8%a7%86%e9%a2%91%e5%85%ac%e5%bc%80%ef%bc%8c%e2%80%9c%e5%b1%8b%e9%a1%b6%e5%b0%91%e5%b9%b4%e2%80%9d%e6%9d%a5%e4%ba%86%26t%3D0&page_type=searchall&page=1",
 					"protocol": "https",
 					"host": [
 						"m",
@@ -183,7 +187,7 @@
 					"query": [
 						{
 							"key": "containerid",
-							"value": "100103type%3D61%26q%3D%E7%99%BE%E5%BA%A6%E4%BA%91%26t%3D0"
+							"value": "100103type%3D61%26q%3D%e9%82%93%e4%bc%a6+x+%e6%97%b6%e5%b0%9a%e5%81%a5%e5%ba%b7+%7c+%e4%b8%83%e6%9c%88%e5%88%8a%e5%b0%81%e9%9d%a2%e8%a7%86%e9%a2%91%e5%85%ac%e5%bc%80%ef%bc%8c%e2%80%9c%e5%b1%8b%e9%a1%b6%e5%b0%91%e5%b9%b4%e2%80%9d%e6%9d%a5%e4%ba%86%26t%3D0"
 						},
 						{
 							"key": "page_type",
@@ -489,7 +493,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://m.weibo.cn/feed/friends?",
+					"raw": "https://m.weibo.cn/feed/friends",
 					"protocol": "https",
 					"host": [
 						"m",
@@ -508,13 +512,59 @@
 			"name": "微博热门最新微博",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Host",
+						"value": "m.weibo.cn",
+						"type": "text"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive",
+						"type": "text"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "max-age=0",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+						"type": "text"
+					},
+					{
+						"key": "Upgrade-Insecure-Requests",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate, br",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "zh-CN,zh;q=0.9,en;q=0.8",
+						"type": "text"
+					},
+					{
+						"key": "Cookie",
+						"value": "_T_WM=16787142025; WEIBOCN_FROM=1110006030; MLOGIN=0; M_WEIBOCN_PARAMS=luicode%3D10000011%26lfid%3D102803%26fid%3D102803%26uicode%3D10000011",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://m.weibo.cn/api/container/getIndex?containerid=102803_ctg1_7978_-_ctg1_7978&openApp=0&since_id=1",
+					"raw": "https://m.weibo.cn/api/container/getIndex?containerid=102803&openApp=0&since_id=1",
 					"protocol": "https",
 					"host": [
 						"m",
@@ -529,7 +579,7 @@
 					"query": [
 						{
 							"key": "containerid",
-							"value": "102803_ctg1_7978_-_ctg1_7978"
+							"value": "102803"
 						},
 						{
 							"key": "openApp",
@@ -539,6 +589,63 @@
 							"key": "since_id",
 							"value": "1",
 							"description": "分页"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取某条微博详细信息",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*",
+						"type": "text"
+					},
+					{
+						"key": "MWeibo-Pwa",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": "https://m.weibo.cn/status/HAizshrbq?mblogid=HAizshrbq&luicode=10000011&lfid=100103type%3D61%26q%3D110%26t%3D0",
+						"type": "text"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://m.weibo.cn/statuses/show?id=HAizshrbq",
+					"protocol": "https",
+					"host": [
+						"m",
+						"weibo",
+						"cn"
+					],
+					"path": [
+						"statuses",
+						"show"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "HAizshrbq"
 						}
 					]
 				}

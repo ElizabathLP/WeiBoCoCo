@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,8 +18,10 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import top.elizabath.weibococo.R;
 import top.elizabath.weibococo.ui.entity.WeiBoBean;
+import top.elizabath.weibococo.ui.util.ToastUtil;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -35,6 +38,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         ImageView weiBoHeadImage;
         TextView weiBoUserName;
         TextView weiBoMsg;
+        Button weiboReport;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -44,6 +48,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             weiBoHeadImage = itemView.findViewById(R.id.weiBoHeadImage);
             weiBoUserName = itemView.findViewById(R.id.weiBoUserName);
             weiBoMsg = itemView.findViewById(R.id.weiBoMsg);
+            weiboReport = itemView.findViewById(R.id.weiboReport);
         }
     }
 
@@ -58,7 +63,26 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             context = parent.getContext();
         }
         View view = LayoutInflater.from(context).inflate(R.layout.weibo_item, parent, false);
-        return new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
+        holder.cardView.setOnClickListener(weibo -> {
+            // 点击跳转详情按钮
+        });
+        holder.weiboReport.setOnClickListener(report -> {
+            // 点击发起举报请求
+            int position = holder.getAdapterPosition();
+            WeiBoBean weiBo = weiBoList.get(position);
+            String weiBoId = weiBo.getMblog().getId();
+            String nowTime = String.valueOf(System.currentTimeMillis());
+            if (StringUtils.isBlank(weiBoId)){
+                ToastUtil.showToast(context,"举报失败，微博ID获取失败");
+                return;
+            }
+            if (StringUtils.isBlank(nowTime)){
+                ToastUtil.showToast(context,"举报失败，当前时间获取失败");
+                return;
+            }
+        });
+        return holder;
     }
 
     @Override
@@ -79,7 +103,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         holder.weiBoMsg.setText(card.getMblog().getCreated_at() + "   来自 " + card.getMblog().getSource());
         Glide.with(context).load(user.getProfile_image_url()).error(R.drawable.cat_my_king).into(holder.weiBoHeadImage);
         holder.weiBoImage.setVisibility(View.GONE);
-        if (imgUrl != null&&!"".equals(imgUrl.trim())) {
+        if (imgUrl != null && !"".equals(imgUrl.trim())) {
             Glide.with(context).load(imgUrl).error(R.drawable.cat_my_king).into(holder.weiBoImage);
             holder.weiBoImage.setVisibility(View.VISIBLE);
         }
@@ -90,7 +114,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         return weiBoList.size();
     }
 
-    private String makeURL(String html){
+    private String makeURL(String html) {
         html = html.replace("src=\"//", "src=\"https://");
         html = html.replace("src=\'//", "src=\'https://");
         html = html.replace("src=\"http://", "src=\"https://");

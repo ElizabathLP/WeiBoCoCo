@@ -80,7 +80,7 @@ public class HomeActivity extends ActivityBase
         initView();
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         swipeRefresh.autoRefreshAnimationOnly();
-        searchPopularWeiBo(nowPage,false);
+        searchPopularWeiBo(nowPage, false);
         weibolist.setLayoutManager(layoutManager);
         weiBoAdapter = new WeiBoAdapter(weiBoList);
         weibolist.setAdapter(weiBoAdapter);
@@ -106,7 +106,7 @@ public class HomeActivity extends ActivityBase
             //右侧Drawable点击监听
             nowPage = 1;
             swipeRefresh.autoRefreshAnimationOnly();
-            searchRealTimeWeiBo(search.getText().toString(), nowPage,false);
+            searchRealTimeWeiBo(search.getText().toString(), nowPage, false);
             Log.i(TAG, "点击了右侧按钮");
         });
         swipeRefresh.setOnRefreshListener(refreshlayout -> {
@@ -182,7 +182,7 @@ public class HomeActivity extends ActivityBase
         }
     }
 
-    public void searchRealTimeWeiBo(String searchKey, int pageNumber,boolean isLoadMore) {
+    public void searchRealTimeWeiBo(String searchKey, int pageNumber, boolean isLoadMore) {
         if (pageNumber < 1) {
             ToastUtil.showToast(HomeActivity.this, "没有更多了哦");
         }
@@ -197,11 +197,11 @@ public class HomeActivity extends ActivityBase
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Accept", "application/json, text/plain, */*");
         headers.put("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Mobile Safari/537.36");
-        getWeiBoList(params, headers, WeiBoSearchResult.class,isLoadMore);
+        getWeiBoList(params, headers, WeiBoSearchResult.class, isLoadMore);
         searchFlag = true;
     }
 
-    public void searchPopularWeiBo(int pageNumber,boolean isLoadMore) {
+    public void searchPopularWeiBo(int pageNumber, boolean isLoadMore) {
         if (pageNumber < 1) {
             ToastUtil.showToast(HomeActivity.this, "没有更多了哦");
         }
@@ -218,10 +218,10 @@ public class HomeActivity extends ActivityBase
         headers.put("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
         headers.put("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
         headers.put("Cookie", "_T_WM=16787142025; WEIBOCN_FROM=1110006030; MLOGIN=0; M_WEIBOCN_PARAMS=luicode%3D10000011%26lfid%3D102803%26fid%3D102803%26uicode%3D10000011");
-        getWeiBoList(params, headers, PopularWeiBoResult.class,isLoadMore);
+        getWeiBoList(params, headers, PopularWeiBoResult.class, isLoadMore);
     }
 
-    public void getWeiBoList(LinkedHashMap<String, String> params, LinkedHashMap<String, String> headers, Class clazz,boolean isLoadMore) {
+    public void getWeiBoList(LinkedHashMap<String, String> params, LinkedHashMap<String, String> headers, Class clazz, boolean isLoadMore) {
         HttpUtil.sendOkHttpGetRequest("https://m.weibo.cn/api/container/getIndex", params, headers, new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -233,7 +233,7 @@ public class HomeActivity extends ActivityBase
             public void onResponse(Call call, Response response) throws IOException {
                 // 返回数据
                 String responseData = response.body().string();
-                if (!isLoadMore){
+                if (!isLoadMore) {
                     weiBoList.clear();
                 }
                 if ("top.elizabath.weibococo.ui.entity.PopularWeiBoResult".equals(clazz.getName())) {
@@ -269,10 +269,10 @@ public class HomeActivity extends ActivityBase
         swipeRefresh = findViewById(R.id.weibolistRefresh);
     }
 
-    private Handler handler = new Handler() {
+    private final Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
-            switch (msg.what) {
+             switch (msg.what) {
                 case UPDATE_WEIBO_LIST:
                     weiBoAdapter.notifyDataSetChanged();
                     swipeRefresh.finishRefresh();
@@ -288,18 +288,18 @@ public class HomeActivity extends ActivityBase
     private void refreshWeiBoLists() {
         nowPage = 1;
         if (searchFlag) {
-            searchRealTimeWeiBo(search.getText().toString(), nowPage,false);
+            searchRealTimeWeiBo(search.getText().toString(), nowPage, false);
         } else {
-            searchPopularWeiBo(nowPage,false);
+            searchPopularWeiBo(nowPage, false);
         }
     }
 
     private void loadMoreWeiBoLists() {
         nowPage += 1;
         if (searchFlag) {
-            searchRealTimeWeiBo(search.getText().toString(), nowPage,true);
+            searchRealTimeWeiBo(search.getText().toString(), nowPage, true);
         } else {
-            searchPopularWeiBo(nowPage,true);
+            searchPopularWeiBo(nowPage, true);
         }
     }
 }
