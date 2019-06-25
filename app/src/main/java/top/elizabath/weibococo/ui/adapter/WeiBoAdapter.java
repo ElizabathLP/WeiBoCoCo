@@ -3,6 +3,7 @@ package top.elizabath.weibococo.ui.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import top.elizabath.weibococo.R;
+import top.elizabath.weibococo.ui.activity.WeiBoDetailActivity;
 import top.elizabath.weibococo.ui.entity.PopularWeiBoResult;
 import top.elizabath.weibococo.ui.entity.WeiBoBean;
 import top.elizabath.weibococo.ui.entity.WeiBoReportMsg;
@@ -47,7 +49,6 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         ImageView weiBoHeadImage;
         TextView weiBoUserName;
         TextView weiBoMsg;
-        Button weiboReport;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,7 +58,6 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             weiBoHeadImage = itemView.findViewById(R.id.weiBoHeadImage);
             weiBoUserName = itemView.findViewById(R.id.weiBoUserName);
             weiBoMsg = itemView.findViewById(R.id.weiBoMsg);
-            weiboReport = itemView.findViewById(R.id.weiboReport);
         }
     }
 
@@ -75,8 +75,10 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         final ViewHolder holder = new ViewHolder(view);
         holder.cardView.setOnClickListener(weibo -> {
             // 点击跳转详情按钮
+            Intent intent = new Intent(context, WeiBoDetailActivity.class);
+            context.startActivity(intent);
         });
-        holder.weiboReport.setOnClickListener(report -> {
+        holder.cardView.setOnLongClickListener(view1 -> {
             // 点击发起举报请求
 
             AlertDialog.Builder dialog = new AlertDialog.Builder(context);
@@ -111,6 +113,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
                 ToastUtil.showToast(context,"取消举报");
             });
             dialog.show();
+            return true;
         });
         return holder;
     }
