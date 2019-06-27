@@ -55,13 +55,13 @@
 			android:layout_margin="5dp"
 			android:textSize="20sp"/>
 
-		<ImageView
+		<com.lzy.ninegrid.NineGridView
 			android:id="@+id/weiboImage"
-			android:layout_width="match_parent"
-			android:layout_height="300dp"
-			android:background="#FFF"
-			android:scaleType="centerCrop"
-			android:visibility="gone"/>
+			android:layout_height="wrap_content"
+		    android:layout_width="match_parent"
+			app:qmui_childHorizontalSpacing="10dp"
+			app:qmui_childVerticalSpacing="10dp"
+			/>
 
 		<com.qmuiteam.qmui.layout.QMUILinearLayout
 			android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
 				android:textSize="20sp"
 				android:layout_weight="1"
 				android:layout_margin="5dp"
-				></com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton>
+				/>
 
 			<com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
 				android:layout_margin="5dp"
@@ -89,8 +89,8 @@
 				android:gravity="center"
 				app:qmui_radius="4dp"
 				android:layout_weight="1"
-				></com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton>
-bu
+				/>
+
 			<com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
 				android:layout_width="0dp"
 				android:layout_margin="5dp"
@@ -100,7 +100,7 @@ bu
 				android:textSize="20sp"
 				app:qmui_radius="4dp"
 				android:layout_weight="1"
-				></com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton>
+				/>
 		</com.qmuiteam.qmui.layout.QMUILinearLayout>
 	</com.qmuiteam.qmui.layout.QMUILinearLayout>
 

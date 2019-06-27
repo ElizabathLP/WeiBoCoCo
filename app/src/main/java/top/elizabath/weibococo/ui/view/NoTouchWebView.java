@@ -4,8 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.webkit.WebView;
+import com.qmuiteam.qmui.widget.webview.QMUIWebView;
 
-public class NoTouchWebView extends WebView {
+public class NoTouchWebView extends QMUIWebView {
+
     public NoTouchWebView(Context context) {
         super(context);
     }
@@ -16,21 +18,6 @@ public class NoTouchWebView extends WebView {
 
     public NoTouchWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    public NoTouchWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    /**
-     * @deprecated
-     * @param context
-     * @param attrs
-     * @param defStyleAttr
-     * @param privateBrowsing
-     */
-    public NoTouchWebView(Context context, AttributeSet attrs, int defStyleAttr, boolean privateBrowsing) {
-        super(context, attrs, defStyleAttr, privateBrowsing);
     }
 
     @Override

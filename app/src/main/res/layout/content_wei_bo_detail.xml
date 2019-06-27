@@ -50,7 +50,7 @@
 
 		</RelativeLayout>
 
-		<top.elizabath.weibococo.ui.view.NoTouchWebView
+		<com.qmuiteam.qmui.widget.webview.QMUIWebView
 			android:id="@+id/weiboDetailContent"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

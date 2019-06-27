@@ -3,6 +3,8 @@ package top.elizabath.weibococo.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.view.KeyEvent;
+import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -19,6 +21,9 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogBuilder;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -116,16 +121,39 @@ public class HomeActivity extends ActivityBase
 
     @Override
     public void onBackPressed() {
-        if (swipeRefresh!=null){
-            swipeRefresh.finishRefresh();
-            swipeRefresh.finishLoadMore();
-        }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
     }
+
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (swipeRefresh != null) {
+            swipeRefresh.finishRefresh();
+            swipeRefresh.finishLoadMore();
+        }
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(),
+                    "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -273,7 +301,7 @@ public class HomeActivity extends ActivityBase
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
-             switch (msg.what) {
+            switch (msg.what) {
                 case UPDATE_WEIBO_LIST:
                     weiBoAdapter.notifyDataSetChanged();
                     swipeRefresh.finishRefresh();

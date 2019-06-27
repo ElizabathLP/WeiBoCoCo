@@ -1,10 +1,18 @@
 package top.elizabath.weibococo.ui.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +25,18 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import com.bumptech.glide.Glide;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.lzy.ninegrid.ImageInfo;
+import com.lzy.ninegrid.NineGridView;
+import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -47,7 +58,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         CardView cardView;
-        ImageView weiBoImage;
+        NineGridView weiBoImage;
         WebView weiBoContent;
         ImageView weiBoHeadImage;
         TextView weiBoUserName;
@@ -75,16 +86,31 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             context = parent.getContext();
         }
         View view = LayoutInflater.from(context).inflate(R.layout.weibo_item, parent, false);
-        final ViewHolder holder = new ViewHolder(view);
+        NineGridView.setImageLoader(new NineGridView.ImageLoader() {
+            @Override
+            public void onDisplayImage(Context context, ImageView imageView, String url) {
+                Glide.with(context).load(url)//
+                        .placeholder(R.drawable.ic_default_color)//
+                        .error(R.drawable.ic_default_color)//
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)//
+                        .into(imageView);
+            }
 
+            @Override
+            public Bitmap getCacheImage(String url) {
+                return null;
+            }
+        });
+        final ViewHolder holder = new ViewHolder(view);
+        onClickEvent(holder);
+        return holder;
+    }
+
+    private void onClickEvent(final ViewHolder holder) {
         holder.cardView.setOnClickListener(weibo -> {
             // 点击跳转详情按钮
             int position = holder.getAdapterPosition();
-            WeiBoBean weiBo = weiBoList.get(position);
-            String bid = weiBo.getMblog().getBid();
-            Intent intent = new Intent(context, WeiBoDetailActivity.class);
-            intent.putExtra("bid",bid);
-            context.startActivity(intent);
+            goToWeiBoDetail(position);
         });
         holder.cardView.setOnLongClickListener(view1 -> {
             // 点击发起举报请求
@@ -110,21 +136,28 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
                     ToastUtil.showToast(context, "举报失败，当前时间获取失败");
                     return;
                 }
-                if (StringUtils.isBlank(weiBoOwnerId)){
+                if (StringUtils.isBlank(weiBoOwnerId)) {
                     ToastUtil.showToast(context, "举报失败，此条微博所有者获取失败");
                     return;
                 }
-                reportWeiBo(KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE,KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE_TYPE_SELL_YELLOW_RESOURCES,nowTime,weiBoId,reporterId,weiBoOwnerId);
+                reportWeiBo(KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE, KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE_TYPE_SELL_YELLOW_RESOURCES, nowTime, weiBoId, reporterId, weiBoOwnerId);
             });
-            dialog.addAction("Cancel", (alog, index) ->  {
+            dialog.addAction("Cancel", (alog, index) -> {
                 // 取消按钮
                 alog.dismiss();
-                ToastUtil.showToast(context,"取消举报");
+                ToastUtil.showToast(context, "取消举报");
             });
             dialog.show();
             return true;
         });
-        return holder;
+    }
+
+    private void goToWeiBoDetail(int position){
+        WeiBoBean weiBo = weiBoList.get(position);
+        String bid = weiBo.getMblog().getBid();
+        Intent intent = new Intent(context, WeiBoDetailActivity.class);
+        intent.putExtra("bid", bid);
+        context.startActivity(intent);
     }
 
     @Override
@@ -144,11 +177,8 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         holder.weiBoUserName.setText(user.getScreen_name());
         holder.weiBoMsg.setText(card.getMblog().getCreated_at() + "   来自 " + card.getMblog().getSource());
         Glide.with(context).load(user.getProfile_image_url()).error(R.drawable.cat_my_king).into(holder.weiBoHeadImage);
-        holder.weiBoImage.setVisibility(View.GONE);
-        if (imgUrl != null && !"".equals(imgUrl.trim())) {
-            Glide.with(context).load(imgUrl).error(R.drawable.cat_my_king).into(holder.weiBoImage);
-            holder.weiBoImage.setVisibility(View.VISIBLE);
-        }
+        List<ImageInfo> imgList = getWeiBoImages(card);
+        holder.weiBoImage.setAdapter(new NineGridViewClickAdapter(context,imgList));
     }
 
     @Override
@@ -166,7 +196,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         return html;
     }
 
-    private void reportWeiBo(int category, int tag_id,String nowTime, String weiBoId, String reporterId, String weiBoOwnerId){
+    private void reportWeiBo(int category, int tag_id, String nowTime, String weiBoId, String reporterId, String weiBoOwnerId) {
         LinkedHashMap<String, String> params = new LinkedHashMap<>();
         params.put("category", String.valueOf(category));
         params.put("tag_id", String.valueOf(tag_id));
@@ -184,14 +214,14 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         head.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36");
         head.put("Content-Type", "application/x-www-form-urlencoded");
         head.put("Accept", "*/*");
-        head.put("Referer", "https://service.account.weibo.com/reportspamobile?rid="+weiBoId+"&type=1&from=20000");
+        head.put("Referer", "https://service.account.weibo.com/reportspamobile?rid=" + weiBoId + "&type=1&from=20000");
         head.put("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
-        head.put("Cookie", "ALF="+nowTime.substring(0,nowTime.length()-3)+"; SUB=_2A25wFjENDeRhGeVM7VYZ9SfJwzuIHXVT-V9FrDV8PUJbkNAKLRD1kW1NTPrCAGTYHesbiDUFJ7n31LmaaQgWBNxu; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WF4Nzr5EBRaFEJ9ybQXnj1U5JpX5oz75NHD95Q0eoqX1h-4SKnNWs4DqcjHBgfbIPxDdcRLxKBLBonLBo9zdcp.; S_ACCOUNT-G0=83b4ce5166df2ff731e23703d58dea95");
+        head.put("Cookie", "ALF=" + nowTime.substring(0, nowTime.length() - 3) + "; SUB=_2A25wFjENDeRhGeVM7VYZ9SfJwzuIHXVT-V9FrDV8PUJbkNAKLRD1kW1NTPrCAGTYHesbiDUFJ7n31LmaaQgWBNxu; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WF4Nzr5EBRaFEJ9ybQXnj1U5JpX5oz75NHD95Q0eoqX1h-4SKnNWs4DqcjHBgfbIPxDdcRLxKBLBonLBo9zdcp.; S_ACCOUNT-G0=83b4ce5166df2ff731e23703d58dea95");
         HttpUtil.sendOkHttpPostRequest(KEYManage.WEIBO_REPORT_URL + nowTime, params, head, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 // 失败
-                Log.d(TAG, "onResponse: "+"举报失败，请检查网络设置");
+                Log.d(TAG, "onResponse: " + "举报失败，请检查网络设置");
             }
 
             @Override
@@ -199,24 +229,34 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
                 // 成功
                 String responseData = response.body().string();
                 WeiBoReportMsg result = GsonUtil.fromJson(responseData, WeiBoReportMsg.class);
-                Log.d(TAG, "onResponse: "+result.getMsg());
+                Log.d(TAG, "onResponse: " + result.getMsg());
             }
         });
 
     }
 
-    private ArrayList<String> getWeiBoImages(WeiBoBean weiBo){
+    private ArrayList<ImageInfo> getWeiBoImages(WeiBoBean weiBo) {
         List<WeiBoBean.MblogBean.PicsBean> picBeans = weiBo.getMblog().getPics();
-        ArrayList<String> pics = new ArrayList<>();
-        if (picBeans==null){
+        ArrayList<ImageInfo> pics = new ArrayList<>();
+        if (picBeans == null) {
             WeiBoBean.MblogBean.PageInfoBean pageInfoBeans = weiBo.getMblog().getPage_info();
-            if (pageInfoBeans!=null){
-                pics.add(pageInfoBeans.getPage_url());
+            if (pageInfoBeans != null) {
+                ImageInfo info = new ImageInfo();
+                info.setThumbnailUrl(pageInfoBeans.getPage_pic().getUrl());
+                info.setBigImageUrl(pageInfoBeans.getPage_pic().getUrl());
+                pics.add(info);
             }
             return pics;
         }
         for (WeiBoBean.MblogBean.PicsBean pic : picBeans) {
-            pics.add(pic.getUrl());
+            ImageInfo info = new ImageInfo();
+            info.setThumbnailUrl(pic.getUrl());
+            if (null!=pic.getLarge()){
+                info.setBigImageUrl(pic.getLarge().getUrl());
+            }else {
+                info.setBigImageUrl(pic.getUrl());
+            }
+            pics.add(info);
         }
         return pics;
     }
