@@ -63,4 +63,8 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-andx-11'
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'org.litepal.android:java:3.0.0'
+    implementation 'com.qmuiteam:qmui:1.2.0'
+    implementation 'com.qmuiteam:arch:0.3.1'
+    implementation 'cn.bingoogolapple:bga-photopicker:1.2.8@aar'
+    implementation 'cn.bingoogolapple:bga-photopicker:1.2.8'
 }

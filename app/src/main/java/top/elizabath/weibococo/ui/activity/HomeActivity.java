@@ -43,7 +43,6 @@ import okhttp3.Call;
 
 import okhttp3.Response;
 import top.elizabath.weibococo.R;
-import top.elizabath.weibococo.ui.activity.login.LoginActivity;
 import top.elizabath.weibococo.ui.adapter.WeiBoAdapter;
 import top.elizabath.weibococo.ui.entity.PopularWeiBoResult;
 import top.elizabath.weibococo.ui.entity.WeiBoBean;
@@ -76,6 +75,7 @@ public class HomeActivity extends ActivityBase
         setContentView(R.layout.activity_home);
         initView();
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+//        VegaLayoutManager layoutManager = new VegaLayoutManager();
         swipeRefresh.autoRefreshAnimationOnly();
         searchPopularWeiBo(nowPage, false);
         weibolist.setLayoutManager(layoutManager);
@@ -116,6 +116,10 @@ public class HomeActivity extends ActivityBase
 
     @Override
     public void onBackPressed() {
+        if (swipeRefresh!=null){
+            swipeRefresh.finishRefresh();
+            swipeRefresh.finishLoadMore();
+        }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {

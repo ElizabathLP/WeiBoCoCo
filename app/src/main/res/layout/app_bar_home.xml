@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.HomeActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <com.qmuiteam.qmui.widget.QMUIAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -19,7 +19,7 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <RelativeLayout
+        <com.qmuiteam.qmui.layout.QMUIRelativeLayout
             android:id="@+id/search_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,13 +40,13 @@
                 android:hint="请输入搜索内容"
                 android:padding="10dp"
                 android:textColorHint="@android:color/darker_gray" />
-        </RelativeLayout>
+        </com.qmuiteam.qmui.layout.QMUIRelativeLayout>
 
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </com.qmuiteam.qmui.widget.QMUIAppBarLayout>
 
     <include layout="@layout/content_home" />
-
+    
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

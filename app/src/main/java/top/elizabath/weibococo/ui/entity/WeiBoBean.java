@@ -255,6 +255,7 @@ public class WeiBoBean {
         private String obj_ext;
         private PageInfoBean page_info;
         private String bid;
+        private List<PicsBean> pics;
 
         public String getCreated_at() {
             return created_at;
@@ -574,6 +575,178 @@ public class WeiBoBean {
 
         public void setBid(String bid) {
             this.bid = bid;
+        }
+
+        public List<PicsBean> getPics() {
+            return pics;
+        }
+
+        public void setPics(List<PicsBean> pics) {
+            this.pics = pics;
+        }
+
+        public static class PicsBean {
+            /**
+             * pid : 005QgkHHly1g4eqr9srhej30j615g0vx
+             * url : https://wx4.sinaimg.cn/orj360/005QgkHHly1g4eqr9srhej30j615g0vx.jpg
+             * size : orj360
+             * geo : {"width":360,"height":778,"croped":false}
+             * large : {"size":"large","url":"https://wx4.sinaimg.cn/large/005QgkHHly1g4eqr9srhej30j615g0vx.jpg","geo":{"width":"690","height":"1492","croped":false}}
+             */
+
+            private String pid;
+            private String url;
+            private String size;
+            private GeoBean geo;
+            private LargeBean large;
+
+            public String getPid() {
+                return pid;
+            }
+
+            public void setPid(String pid) {
+                this.pid = pid;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+
+            public String getSize() {
+                return size;
+            }
+
+            public void setSize(String size) {
+                this.size = size;
+            }
+
+            public GeoBean getGeo() {
+                return geo;
+            }
+
+            public void setGeo(GeoBean geo) {
+                this.geo = geo;
+            }
+
+            public LargeBean getLarge() {
+                return large;
+            }
+
+            public void setLarge(LargeBean large) {
+                this.large = large;
+            }
+
+            public static class GeoBean {
+                /**
+                 * width : 360
+                 * height : 778
+                 * croped : false
+                 */
+
+                private int width;
+                private int height;
+                private boolean croped;
+
+                public int getWidth() {
+                    return width;
+                }
+
+                public void setWidth(int width) {
+                    this.width = width;
+                }
+
+                public int getHeight() {
+                    return height;
+                }
+
+                public void setHeight(int height) {
+                    this.height = height;
+                }
+
+                public boolean isCroped() {
+                    return croped;
+                }
+
+                public void setCroped(boolean croped) {
+                    this.croped = croped;
+                }
+            }
+
+            public static class LargeBean {
+                /**
+                 * size : large
+                 * url : https://wx4.sinaimg.cn/large/005QgkHHly1g4eqr9srhej30j615g0vx.jpg
+                 * geo : {"width":"690","height":"1492","croped":false}
+                 */
+
+                private String size;
+                private String url;
+                private GeoBeanX geo;
+
+                public String getSize() {
+                    return size;
+                }
+
+                public void setSize(String size) {
+                    this.size = size;
+                }
+
+                public String getUrl() {
+                    return url;
+                }
+
+                public void setUrl(String url) {
+                    this.url = url;
+                }
+
+                public GeoBeanX getGeo() {
+                    return geo;
+                }
+
+                public void setGeo(GeoBeanX geo) {
+                    this.geo = geo;
+                }
+
+                public static class GeoBeanX {
+                    /**
+                     * width : 690
+                     * height : 1492
+                     * croped : false
+                     */
+
+                    private String width;
+                    private String height;
+                    private boolean croped;
+
+                    public String getWidth() {
+                        return width;
+                    }
+
+                    public void setWidth(String width) {
+                        this.width = width;
+                    }
+
+                    public String getHeight() {
+                        return height;
+                    }
+
+                    public void setHeight(String height) {
+                        this.height = height;
+                    }
+
+                    public boolean isCroped() {
+                        return croped;
+                    }
+
+                    public void setCroped(boolean croped) {
+                        this.croped = croped;
+                    }
+                }
+            }
         }
 
         public static class UserBean {

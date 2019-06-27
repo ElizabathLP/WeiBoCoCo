@@ -17,19 +17,22 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import com.bumptech.glide.Glide;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import top.elizabath.weibococo.R;
 import top.elizabath.weibococo.ui.activity.WeiBoDetailActivity;
-import top.elizabath.weibococo.ui.entity.PopularWeiBoResult;
 import top.elizabath.weibococo.ui.entity.WeiBoBean;
 import top.elizabath.weibococo.ui.entity.WeiBoReportMsg;
 import top.elizabath.weibococo.ui.util.*;
@@ -85,13 +88,13 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         });
         holder.cardView.setOnLongClickListener(view1 -> {
             // 点击发起举报请求
-
-            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+            QMUIDialog.MessageDialogBuilder dialog = new QMUIDialog.MessageDialogBuilder(context);
             dialog.setTitle("确定举报此条微博？");
             dialog.setMessage("系统将以你的名义举报此条微博");
             dialog.setCancelable(true);
-            dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+            dialog.addAction("OK", (alog, index) -> {
                 //确定按钮
+                alog.dismiss();
                 int position = holder.getAdapterPosition();
                 WeiBoBean weiBo = weiBoList.get(position);
                 String weiBoId = weiBo.getMblog().getId();
@@ -113,8 +116,9 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
                 }
                 reportWeiBo(KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE,KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE_TYPE_SELL_YELLOW_RESOURCES,nowTime,weiBoId,reporterId,weiBoOwnerId);
             });
-            dialog.setNegativeButton("Cancel", (dialogInterface, i) -> {
+            dialog.addAction("Cancel", (alog, index) ->  {
                 // 取消按钮
+                alog.dismiss();
                 ToastUtil.showToast(context,"取消举报");
             });
             dialog.show();
@@ -200,4 +204,21 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         });
 
     }
+
+    private ArrayList<String> getWeiBoImages(WeiBoBean weiBo){
+        List<WeiBoBean.MblogBean.PicsBean> picBeans = weiBo.getMblog().getPics();
+        ArrayList<String> pics = new ArrayList<>();
+        if (picBeans==null){
+            WeiBoBean.MblogBean.PageInfoBean pageInfoBeans = weiBo.getMblog().getPage_info();
+            if (pageInfoBeans!=null){
+                pics.add(pageInfoBeans.getPage_url());
+            }
+            return pics;
+        }
+        for (WeiBoBean.MblogBean.PicsBean pic : picBeans) {
+            pics.add(pic.getUrl());
+        }
+        return pics;
+    }
+
 }

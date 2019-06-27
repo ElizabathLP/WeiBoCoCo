@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   android:orientation="vertical"
-                                   android:layout_margin="10dp"
-                                   app:cardCornerRadius="4dp"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="wrap_content">
-
-	<LinearLayout
+<androidx.cardview.widget.CardView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_margin="10dp"
+	app:cardCornerRadius="4dp"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+	<com.qmuiteam.qmui.layout.QMUILinearLayout
 		android:layout_width="match_parent"
 		android:orientation="vertical"
 		android:layout_height="match_parent">
 
-		<RelativeLayout
+		<com.qmuiteam.qmui.layout.QMUIRelativeLayout
 			android:orientation="horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="70dp"
@@ -45,7 +45,7 @@
 				android:layout_toRightOf="@+id/weiBoHeadImage"
 				android:layout_marginLeft="40px"
 				android:layout_below="@+id/weiBoUserName"/>
-		</RelativeLayout>
+		</com.qmuiteam.qmui.layout.QMUIRelativeLayout>
 
 		<top.elizabath.weibococo.ui.view.NoTouchWebView
 			android:id="@+id/weiboContent"
@@ -62,6 +62,47 @@
 			android:background="#FFF"
 			android:scaleType="centerCrop"
 			android:visibility="gone"/>
-	</LinearLayout>
+
+		<com.qmuiteam.qmui.layout.QMUILinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:gravity="center">
+
+			<com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+				android:layout_width="0dp"
+				android:layout_height="40dp"
+				android:text="转发"
+				android:gravity="center"
+				app:qmui_radius="4dp"
+				android:textSize="20sp"
+				android:layout_weight="1"
+				android:layout_margin="5dp"
+				></com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton>
+
+			<com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+				android:layout_margin="5dp"
+				android:layout_width="0dp"
+				android:layout_height="40dp"
+				android:text="评论"
+				android:textSize="20sp"
+				android:gravity="center"
+				app:qmui_radius="4dp"
+				android:layout_weight="1"
+				></com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton>
+bu
+			<com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+				android:layout_width="0dp"
+				android:layout_margin="5dp"
+				android:layout_height="40dp"
+				android:text="点赞"
+				android:gravity="center"
+				android:textSize="20sp"
+				app:qmui_radius="4dp"
+				android:layout_weight="1"
+				></com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton>
+		</com.qmuiteam.qmui.layout.QMUILinearLayout>
+	</com.qmuiteam.qmui.layout.QMUILinearLayout>
+
 
 </androidx.cardview.widget.CardView>
