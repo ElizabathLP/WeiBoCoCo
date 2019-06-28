@@ -108,7 +108,7 @@ public class WeiBoDetailActivity extends AppCompatActivity {
                 case GET_DETAIL_SUCCESS:
 //                    更新控件
                     WeiBoSearchResult weiBoDetail = (WeiBoSearchResult) msg.obj;
-                    String html = makeURL(weiBoDetail.getData().getText());
+                    String html = URLHelper.replaceUrlNormaily(weiBoDetail.getData().getText());
                     runOnUiThread(() -> {
                         String imgUrl = null;
                         UserBean user = weiBoDetail.getData().getUser();
@@ -130,19 +130,6 @@ public class WeiBoDetailActivity extends AppCompatActivity {
             }
         }
     };
-    private String makeURL(String html) {
-        html = html.replace("src=\"//", "src=\"https://");
-        html = html.replace("src=\'//", "src=\'https://");
-        html = html.replace("src=\"http://", "src=\"https://");
-        html = html.replace("src=\'http://", "src=\'https://");
-        html = html.replace("<a href=\"/status/", "<a href=\"https://m.weibo.cn/status/");
-        html = html.replace("<a href=\'/status/", "<a href=\'https://m.weibo.cn/status/");
-        StringBuilder builder = new StringBuilder();
-        builder.append("<div>");
-        builder.append(html);
-        builder.append("</div>");
-        return builder.toString();
-    }
 
     private ArrayList<ImageInfo> getWeiBoImages(WeiBoSearchResult weiBoDetail) {
         List<PicsBean> picBeans = weiBoDetail.getData().getPics();

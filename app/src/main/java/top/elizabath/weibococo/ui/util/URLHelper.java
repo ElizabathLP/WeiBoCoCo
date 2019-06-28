@@ -43,6 +43,11 @@ public class URLHelper {
         html = html.replace("src=\'http://", "src=\'https://");
         html = html.replace("<a href=\"/status/", "<a href=\"https://m.weibo.cn/status/");
         html = html.replace("<a href=\'/status/", "<a href=\'https://m.weibo.cn/status/");
-        return html;
+        StringBuilder builder = new StringBuilder();
+        builder.append("<div>");
+        builder.append(html);
+        builder.append("</div>");
+        return builder.toString();
     }
+
 }
