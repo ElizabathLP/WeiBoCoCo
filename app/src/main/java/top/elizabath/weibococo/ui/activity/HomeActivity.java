@@ -49,7 +49,8 @@ import top.elizabath.weibococo.ui.view.SearchBarEditText;
 public class HomeActivity extends ActivityBase
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
-    private final int UPDATE_WEIBO_LIST = 1;
+    private final int UPDATE_WEIBO_LIST_SUCCESS = 200;
+    private final int UPDATE_WEIBO_LIST_FAILED = 500;
     private int nowPage = 1;
 
     private SearchBarEditText search;
@@ -99,7 +100,6 @@ public class HomeActivity extends ActivityBase
             nowPage = 1;
             swipeRefresh.autoRefreshAnimationOnly();
             searchRealTimeWeiBo(search.getText().toString(), nowPage, false);
-            Log.i(TAG, "点击了右侧按钮");
         });
         swipeRefresh.setOnRefreshListener(refreshlayout -> {
             refreshWeiBoLists();
@@ -246,6 +246,9 @@ public class HomeActivity extends ActivityBase
             public void onFailure(Call call, IOException e) {
                 // 异常处理
                 Log.d(TAG, "请求失败");
+                Message message = new Message();
+                message.what = UPDATE_WEIBO_LIST_FAILED;
+                handler.sendMessage(message);
             }
 
             @Override
@@ -257,23 +260,27 @@ public class HomeActivity extends ActivityBase
                 }
                 if ("popular".equals(way)) {
                     WeiBoSearchResult result = GsonUtil.fromJson(responseData, WeiBoSearchResult.class);
-                    weiBoList.addAll(result.getData().getCards());
+                    List<WeiBoBean> weiBoBeans = result.getData().getCards();
+                    weiBoList.addAll(weiBoBeans);
                 } else if ("search".equals(way)) {
                     WeiBoSearchResult result = GsonUtil.fromJson(responseData, WeiBoSearchResult.class);
                     try {
-                        weiBoList.addAll(result.getData().getCards().get(0).getCard_group());
+                        List<WeiBoBean> weiBoBeans = result.getData().getCards().get(0).getCard_group();
+                        weiBoList.addAll(weiBoBeans);
                     } catch (Exception e) {
+                        Message message = new Message();
+                        message.what = UPDATE_WEIBO_LIST_FAILED;
+                        handler.sendMessage(message);
                         Log.e(TAG, "onResponse: ", e);
-                        weiBoList = new ArrayList<>();
+                        return;
                     }
                     if (null == weiBoList) {
                         weiBoList = new ArrayList<>();
                     }
                 }
                 Message message = new Message();
-                message.what = UPDATE_WEIBO_LIST;
+                message.what = UPDATE_WEIBO_LIST_SUCCESS;
                 handler.sendMessage(message);
-
             }
         });
     }
@@ -293,10 +300,20 @@ public class HomeActivity extends ActivityBase
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
-                case UPDATE_WEIBO_LIST:
+                case UPDATE_WEIBO_LIST_SUCCESS:
+                    runOnUiThread(() -> {
+                        swipeRefresh.finishRefresh();
+                        swipeRefresh.finishLoadMore();
+                        swipeRefresh.closeHeaderOrFooter();
+                    });
                     weiBoAdapter.notifyDataSetChanged();
-                    swipeRefresh.finishRefresh();
-                    swipeRefresh.finishLoadMore();
+                    break;
+                case UPDATE_WEIBO_LIST_FAILED:
+                    runOnUiThread(() -> {
+                        swipeRefresh.finishRefresh(false);
+                        swipeRefresh.finishLoadMore(false);
+                        swipeRefresh.closeHeaderOrFooter();
+                    });
                     break;
                 default:
                     break;

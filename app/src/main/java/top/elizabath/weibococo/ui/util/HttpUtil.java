@@ -52,10 +52,7 @@ public class HttpUtil {
         Request.Builder builder = new Request.Builder();
         builder = addRequestHeaders(headers,builder);
         String url = generateGetUrl(address, params);
-        Log.d(TAG, "sendOkHttpGetRequest: "+url);
-        CacheControl cache = new CacheControl.Builder().noCache()
-                .build();
-        Request request = builder.url(url).cacheControl(cache).build();
+        Request request = builder.url(url).build();
         client.newCall(request).enqueue(callback);
     }
 
