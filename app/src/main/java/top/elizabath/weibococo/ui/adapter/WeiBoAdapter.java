@@ -221,13 +221,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
 
         WeiBoBean card = weiBoList.get(position);
         String html = card.getMblog().getText();
-        String imgUrl = null;
         UserBean user = card.getMblog().getUser();
-        try {
-            imgUrl = card.getMblog().getPage_info().getPage_pic().getUrl();
-        } catch (Exception e) {
-            Log.e(TAG, "微博图片资源不存在: ", e);
-        }
         html = URLHelper.replaceUrlNormaily(html);
         holder.weiBoContent.loadData(html, "text/html; charset=UTF-8", null);
         holder.weiBoUserName.setText(user.getScreen_name());

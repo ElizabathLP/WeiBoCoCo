@@ -110,13 +110,7 @@ public class WeiBoDetailActivity extends AppCompatActivity {
                     WeiBoSearchResult weiBoDetail = (WeiBoSearchResult) msg.obj;
                     String html = URLHelper.replaceUrlNormaily(weiBoDetail.getData().getText());
                     runOnUiThread(() -> {
-                        String imgUrl = null;
                         UserBean user = weiBoDetail.getData().getUser();
-                        try {
-                            imgUrl = weiBoDetail.getData().getPage_info().getPage_pic().getUrl();
-                        } catch (Exception e) {
-                            Log.e(TAG, "微博图片资源不存在: ", e);
-                        }
                         weiBoContent.loadData(html, "text/html; charset=UTF-8", null);
                         weiBoUserName.setText(user.getScreen_name());
                         weiBoMsg.setText(weiBoDetail.getData().getCreated_at() + "   来自 " + weiBoDetail.getData().getSource());

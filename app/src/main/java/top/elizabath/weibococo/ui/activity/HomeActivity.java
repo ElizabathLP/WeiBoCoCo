@@ -216,7 +216,7 @@ public class HomeActivity extends ActivityBase
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Accept", "application/json, text/plain, */*");
         headers.put("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Mobile Safari/537.36");
-        getWeiBoList(params, headers, WeiBoSearchResult.class, isLoadMore);
+        getWeiBoList(params, headers, "search", isLoadMore);
         searchFlag = true;
     }
 
@@ -237,10 +237,10 @@ public class HomeActivity extends ActivityBase
         headers.put("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
         headers.put("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
         headers.put("Cookie", "_T_WM=16787142025; WEIBOCN_FROM=1110006030; MLOGIN=0; M_WEIBOCN_PARAMS=luicode%3D10000011%26lfid%3D102803%26fid%3D102803%26uicode%3D10000011");
-        getWeiBoList(params, headers, WeiBoSearchResult.class, isLoadMore);
+        getWeiBoList(params, headers, "popular", isLoadMore);
     }
 
-    public void getWeiBoList(LinkedHashMap<String, String> params, LinkedHashMap<String, String> headers, Class clazz, boolean isLoadMore) {
+    public void getWeiBoList(LinkedHashMap<String, String> params, LinkedHashMap<String, String> headers, String way, boolean isLoadMore) {
         HttpUtil.sendOkHttpGetRequest(KEYManage.WEIBO_SEARCH_URL, params, headers, new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -255,14 +255,15 @@ public class HomeActivity extends ActivityBase
                 if (!isLoadMore) {
                     weiBoList.clear();
                 }
-                if ("top.elizabath.weibococo.ui.entity.PopularWeiBoResult".equals(clazz.getName())) {
+                if ("popular".equals(way)) {
                     WeiBoSearchResult result = GsonUtil.fromJson(responseData, WeiBoSearchResult.class);
                     weiBoList.addAll(result.getData().getCards());
-                } else if ("top.elizabath.weibococo.ui.entity.WeiBoSearchResult".equals(clazz.getName())) {
+                } else if ("search".equals(way)) {
                     WeiBoSearchResult result = GsonUtil.fromJson(responseData, WeiBoSearchResult.class);
                     try {
                         weiBoList.addAll(result.getData().getCards().get(0).getCard_group());
                     } catch (Exception e) {
+                        Log.e(TAG, "onResponse: ", e);
                         weiBoList = new ArrayList<>();
                     }
                     if (null == weiBoList) {
