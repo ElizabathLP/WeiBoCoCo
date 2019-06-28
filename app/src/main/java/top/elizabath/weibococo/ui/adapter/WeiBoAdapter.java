@@ -7,19 +7,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -37,6 +33,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lzy.ninegrid.ImageInfo;
 import com.lzy.ninegrid.NineGridView;
 import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
+import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton;
+import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -47,6 +45,7 @@ import top.elizabath.weibococo.ui.activity.WeiBoDetailActivity;
 import top.elizabath.weibococo.ui.entity.WeiBoBean;
 import top.elizabath.weibococo.ui.entity.WeiBoReportMsg;
 import top.elizabath.weibococo.ui.util.*;
+import top.elizabath.weibococo.ui.view.CustomVideoView;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -63,6 +62,9 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         ImageView weiBoHeadImage;
         TextView weiBoUserName;
         TextView weiBoMsg;
+        VideoView weiBoVideo;
+        QMUIAlphaImageButton weiBoVideoPlayBtn;
+        QMUIRadiusImageView weiBoVideoDisplayImg;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +74,9 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             weiBoHeadImage = itemView.findViewById(R.id.weiBoHeadImage);
             weiBoUserName = itemView.findViewById(R.id.weiBoUserName);
             weiBoMsg = itemView.findViewById(R.id.weiBoMsg);
+            weiBoVideo = itemView.findViewById(R.id.weiboVideo);
+            weiBoVideoPlayBtn = itemView.findViewById(R.id.weiBoVideoPlayBtn);
+            weiBoVideoDisplayImg = itemView.findViewById(R.id.weiBoVideoDisplayImg);
         }
     }
 
@@ -150,9 +155,61 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             dialog.show();
             return true;
         });
+        holder.weiBoVideoPlayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.weiBoVideoPlayBtn.setVisibility(View.GONE);
+                holder.weiBoVideoDisplayImg.setVisibility(View.GONE);
+                holder.weiBoVideo.setVisibility(View.VISIBLE);
+                holder.weiBoVideo.start();
+            }
+        });
+        holder.weiBoVideo.setOnTouchListener(new View.OnTouchListener() {
+            GestureDetector detector;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (detector == null) {
+                    detector = new GestureDetector(context, new GestureDetector.OnGestureListener() {
+                        @Override
+                        public boolean onDown(MotionEvent motionEvent) {
+                            holder.weiBoVideo.pause();
+                            holder.weiBoVideoPlayBtn.setVisibility(View.VISIBLE);
+                            holder.weiBoVideoDisplayImg.setVisibility(View.VISIBLE);
+                            holder.weiBoVideo.setVisibility(View.GONE);
+                            return true;
+                        }
+
+                        @Override
+                        public void onShowPress(MotionEvent motionEvent) {
+                        }
+
+                        @Override
+                        public boolean onSingleTapUp(MotionEvent motionEvent) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+                            return false;
+                        }
+
+                        @Override
+                        public void onLongPress(MotionEvent motionEvent) {
+                        }
+
+                        @Override
+                        public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+                            return false;
+                        }
+                    });
+                }
+                return detector.onTouchEvent(motionEvent);
+            }
+        });
     }
 
-    private void goToWeiBoDetail(int position){
+    private void goToWeiBoDetail(int position) {
         WeiBoBean weiBo = weiBoList.get(position);
         String bid = weiBo.getMblog().getBid();
         Intent intent = new Intent(context, WeiBoDetailActivity.class);
@@ -177,8 +234,38 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         holder.weiBoUserName.setText(user.getScreen_name());
         holder.weiBoMsg.setText(card.getMblog().getCreated_at() + "   来自 " + card.getMblog().getSource());
         Glide.with(context).load(user.getProfile_image_url()).error(R.drawable.cat_my_king).into(holder.weiBoHeadImage);
+        holder.weiBoVideoPlayBtn.setVisibility(View.GONE);
+        holder.weiBoVideoDisplayImg.setVisibility(View.GONE);
+        holder.weiBoVideo.setVisibility(View.GONE);
+        WeiBoBean.MblogBean.PageInfoBean pageInfoBeans = card.getMblog().getPage_info();
         List<ImageInfo> imgList = getWeiBoImages(card);
-        holder.weiBoImage.setAdapter(new NineGridViewClickAdapter(context,imgList));
+        if (pageInfoBeans != null) {
+            String type = pageInfoBeans.getType();
+            switch (type) {
+                case "video":
+                    holder.weiBoImage.setVisibility(View.GONE);
+                    holder.weiBoVideoDisplayImg.setVisibility(View.VISIBLE);
+                    Glide.with(context).load(pageInfoBeans.getPage_pic().getUrl()).error(R.drawable.cat_my_king).into(holder.weiBoVideoDisplayImg);
+                    holder.weiBoVideoPlayBtn.setVisibility(View.VISIBLE);
+                    holder.weiBoVideo.setVideoPath(pageInfoBeans.getMedia_info().getStream_url());
+                    break;
+                default:
+                    holder.weiBoImage.setVisibility(View.VISIBLE);
+                    holder.weiBoImage.setAdapter(new NineGridViewClickAdapter(context, imgList));
+                    break;
+            }
+        }
+
+//        if (imgList.size() == 1) {
+//            holder.weiBoVideo.setVideoPath("http://video.pearvideo.com/mp4/adshort/20190627/cont-1571067-14065110_adpkg-ad_sd.mp4");
+//            holder.weiBoVideo.requestFocus();
+
+//            holder.weiBoVideo.setVideoURI(Uri.parse("http://video.pearvideo.com/mp4/adshort/20190627/cont-1571067-14065110_adpkg-ad_sd.mp4"));
+//            MediaController mediaController = new MediaController(context);
+//            holder.weiBoVideo.setMediaController(mediaController);
+//            mediaController.setMediaPlayer(holder.weiBoVideo);
+//            holder.weiBoVideo.start();
+//        }
     }
 
     @Override
@@ -251,9 +338,9 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         for (WeiBoBean.MblogBean.PicsBean pic : picBeans) {
             ImageInfo info = new ImageInfo();
             info.setThumbnailUrl(pic.getUrl());
-            if (null!=pic.getLarge()){
+            if (null != pic.getLarge()) {
                 info.setBigImageUrl(pic.getLarge().getUrl());
-            }else {
+            } else {
                 info.setBigImageUrl(pic.getUrl());
             }
             pics.add(info);

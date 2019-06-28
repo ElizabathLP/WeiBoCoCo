@@ -1885,6 +1885,8 @@ public class WeiBoBean {
             private String content2;
             private String type;
             private String object_id;
+            private MediaInfoBean media_info;
+            private VideoDetailsBean video_details;
 
             public PagePicBean getPage_pic() {
                 return page_pic;
@@ -1942,6 +1944,22 @@ public class WeiBoBean {
                 this.object_id = object_id;
             }
 
+            public MediaInfoBean getMedia_info() {
+                return media_info;
+            }
+
+            public void setMedia_info(MediaInfoBean media_info) {
+                this.media_info = media_info;
+            }
+
+            public VideoDetailsBean getVideo_details() {
+                return video_details;
+            }
+
+            public void setVideo_details(VideoDetailsBean video_details) {
+                this.video_details = video_details;
+            }
+
             public static class PagePicBean {
                 /**
                  * url : https://wx2.sinaimg.cn/large/007aAt08ly8g3yj5etqymj319d1hdnl8.jpg
@@ -1955,6 +1973,78 @@ public class WeiBoBean {
 
                 public void setUrl(String url) {
                     this.url = url;
+                }
+            }
+
+            public static class MediaInfoBean {
+                /**
+                 * stream_url : https://gslb.miaopai.com/stream/-KbbsdrY73BJLJxd9j1hXFPlG9WkRocthFlBjw__.mp4?yx=&refer=weibo_app&vend=weibo&label=mp4_ld&mpflag=16&Expires=1561491594&ssig=Vnt6RhEY5t&KID=unistore,video
+                 * stream_url_hd : https://gslb.miaopai.com/stream/-KbbsdrY73BJLJxd9j1hXFPlG9WkRocthFlBjw__.mp4?yx=&refer=weibo_app&vend=weibo&label=mp4_hd&mpflag=8&Expires=1561491594&ssig=Vnt6RhEY5t&KID=unistore,video
+                 * duration : 89
+                 */
+
+                private String stream_url;
+                private String stream_url_hd;
+                private String duration;
+
+                public String getStream_url() {
+                    return stream_url;
+                }
+
+                public void setStream_url(String stream_url) {
+                    this.stream_url = stream_url;
+                }
+
+                public String getStream_url_hd() {
+                    return stream_url_hd;
+                }
+
+                public void setStream_url_hd(String stream_url_hd) {
+                    this.stream_url_hd = stream_url_hd;
+                }
+
+                public String getDuration() {
+                    return duration;
+                }
+
+                public void setDuration(String duration) {
+                    this.duration = duration;
+                }
+            }
+
+            public static class VideoDetailsBean {
+                /**
+                 * size : 3681280
+                 * bitrate : 330
+                 * label : mp4_720p
+                 */
+
+                private String size;
+                private String bitrate;
+                private String label;
+
+                public String getSize() {
+                    return size;
+                }
+
+                public void setSize(String size) {
+                    this.size = size;
+                }
+
+                public String getBitrate() {
+                    return bitrate;
+                }
+
+                public void setBitrate(String bitrate) {
+                    this.bitrate = bitrate;
+                }
+
+                public String getLabel() {
+                    return label;
+                }
+
+                public void setLabel(String label) {
+                    this.label = label;
                 }
             }
         }
