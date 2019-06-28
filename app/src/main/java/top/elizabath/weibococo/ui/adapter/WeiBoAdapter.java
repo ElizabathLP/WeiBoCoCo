@@ -145,6 +145,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
                     return;
                 }
                 reportWeiBo(KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE, KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE_TYPE_SELL_YELLOW_RESOURCES, nowTime, weiBoId, reporterId, weiBoOwnerId);
+                ToastUtil.showToast(context,"举报成功");
             });
             dialog.addAction("Cancel", (alog, index) -> {
                 // 取消按钮
