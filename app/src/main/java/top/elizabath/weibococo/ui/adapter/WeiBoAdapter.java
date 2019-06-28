@@ -42,8 +42,7 @@ import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import top.elizabath.weibococo.R;
 import top.elizabath.weibococo.ui.activity.WeiBoDetailActivity;
-import top.elizabath.weibococo.ui.entity.WeiBoBean;
-import top.elizabath.weibococo.ui.entity.WeiBoReportMsg;
+import top.elizabath.weibococo.ui.entity.*;
 import top.elizabath.weibococo.ui.util.*;
 import top.elizabath.weibococo.ui.view.CustomVideoView;
 
@@ -223,13 +222,13 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         WeiBoBean card = weiBoList.get(position);
         String html = card.getMblog().getText();
         String imgUrl = null;
-        WeiBoBean.MblogBean.UserBean user = card.getMblog().getUser();
+        UserBean user = card.getMblog().getUser();
         try {
             imgUrl = card.getMblog().getPage_info().getPage_pic().getUrl();
         } catch (Exception e) {
             Log.e(TAG, "微博图片资源不存在: ", e);
         }
-        html = makeURL(html);
+        html = URLHelper.replaceUrlNormaily(html);
         holder.weiBoContent.loadData(html, "text/html; charset=UTF-8", null);
         holder.weiBoUserName.setText(user.getScreen_name());
         holder.weiBoMsg.setText(card.getMblog().getCreated_at() + "   来自 " + card.getMblog().getSource());
@@ -237,7 +236,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         holder.weiBoVideoPlayBtn.setVisibility(View.GONE);
         holder.weiBoVideoDisplayImg.setVisibility(View.GONE);
         holder.weiBoVideo.setVisibility(View.GONE);
-        WeiBoBean.MblogBean.PageInfoBean pageInfoBeans = card.getMblog().getPage_info();
+        PageInfoBean pageInfoBeans = card.getMblog().getPage_info();
         List<ImageInfo> imgList = getWeiBoImages(card);
         if (pageInfoBeans != null) {
             String type = pageInfoBeans.getType();
@@ -256,31 +255,11 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             }
         }
 
-//        if (imgList.size() == 1) {
-//            holder.weiBoVideo.setVideoPath("http://video.pearvideo.com/mp4/adshort/20190627/cont-1571067-14065110_adpkg-ad_sd.mp4");
-//            holder.weiBoVideo.requestFocus();
-
-//            holder.weiBoVideo.setVideoURI(Uri.parse("http://video.pearvideo.com/mp4/adshort/20190627/cont-1571067-14065110_adpkg-ad_sd.mp4"));
-//            MediaController mediaController = new MediaController(context);
-//            holder.weiBoVideo.setMediaController(mediaController);
-//            mediaController.setMediaPlayer(holder.weiBoVideo);
-//            holder.weiBoVideo.start();
-//        }
     }
 
     @Override
     public int getItemCount() {
         return weiBoList.size();
-    }
-
-    private String makeURL(String html) {
-        html = html.replace("src=\"//", "src=\"https://");
-        html = html.replace("src=\'//", "src=\'https://");
-        html = html.replace("src=\"http://", "src=\"https://");
-        html = html.replace("src=\'http://", "src=\'https://");
-        html = html.replace("<a href=\"/status/", "<a href=\"https://m.weibo.cn/status/");
-        html = html.replace("<a href=\'/status/", "<a href=\'https://m.weibo.cn/status/");
-        return html;
     }
 
     private void reportWeiBo(int category, int tag_id, String nowTime, String weiBoId, String reporterId, String weiBoOwnerId) {
@@ -321,12 +300,11 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         });
 
     }
-
     private ArrayList<ImageInfo> getWeiBoImages(WeiBoBean weiBo) {
-        List<WeiBoBean.MblogBean.PicsBean> picBeans = weiBo.getMblog().getPics();
+        List<PicsBean> picBeans = weiBo.getMblog().getPics();
         ArrayList<ImageInfo> pics = new ArrayList<>();
         if (picBeans == null) {
-            WeiBoBean.MblogBean.PageInfoBean pageInfoBeans = weiBo.getMblog().getPage_info();
+            PageInfoBean pageInfoBeans = weiBo.getMblog().getPage_info();
             if (pageInfoBeans != null) {
                 ImageInfo info = new ImageInfo();
                 info.setThumbnailUrl(pageInfoBeans.getPage_pic().getUrl());
@@ -335,7 +313,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             }
             return pics;
         }
-        for (WeiBoBean.MblogBean.PicsBean pic : picBeans) {
+        for (PicsBean pic : picBeans) {
             ImageInfo info = new ImageInfo();
             info.setThumbnailUrl(pic.getUrl());
             if (null != pic.getLarge()) {
@@ -347,5 +325,4 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         }
         return pics;
     }
-
 }

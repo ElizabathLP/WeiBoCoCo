@@ -35,4 +35,14 @@ public class URLHelper {
         }
         return result;
     }
+
+    public static String replaceUrlNormaily(String html) {
+        html = html.replace("src=\"//", "src=\"https://");
+        html = html.replace("src=\'//", "src=\'https://");
+        html = html.replace("src=\"http://", "src=\"https://");
+        html = html.replace("src=\'http://", "src=\'https://");
+        html = html.replace("<a href=\"/status/", "<a href=\"https://m.weibo.cn/status/");
+        html = html.replace("<a href=\'/status/", "<a href=\'https://m.weibo.cn/status/");
+        return html;
+    }
 }

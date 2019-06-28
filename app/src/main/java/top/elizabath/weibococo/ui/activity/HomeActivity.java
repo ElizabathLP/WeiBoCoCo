@@ -20,21 +20,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.gson.Gson;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogBuilder;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.Menu;
 import android.widget.RelativeLayout;
@@ -49,7 +41,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 import top.elizabath.weibococo.R;
 import top.elizabath.weibococo.ui.adapter.WeiBoAdapter;
-import top.elizabath.weibococo.ui.entity.PopularWeiBoResult;
 import top.elizabath.weibococo.ui.entity.WeiBoBean;
 import top.elizabath.weibococo.ui.entity.WeiBoSearchResult;
 import top.elizabath.weibococo.ui.util.*;
@@ -80,7 +71,6 @@ public class HomeActivity extends ActivityBase
         setContentView(R.layout.activity_home);
         initView();
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
-//        VegaLayoutManager layoutManager = new VegaLayoutManager();
         swipeRefresh.autoRefreshAnimationOnly();
         searchPopularWeiBo(nowPage, false);
         weibolist.setLayoutManager(layoutManager);
@@ -247,7 +237,7 @@ public class HomeActivity extends ActivityBase
         headers.put("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
         headers.put("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
         headers.put("Cookie", "_T_WM=16787142025; WEIBOCN_FROM=1110006030; MLOGIN=0; M_WEIBOCN_PARAMS=luicode%3D10000011%26lfid%3D102803%26fid%3D102803%26uicode%3D10000011");
-        getWeiBoList(params, headers, PopularWeiBoResult.class, isLoadMore);
+        getWeiBoList(params, headers, WeiBoSearchResult.class, isLoadMore);
     }
 
     public void getWeiBoList(LinkedHashMap<String, String> params, LinkedHashMap<String, String> headers, Class clazz, boolean isLoadMore) {
@@ -266,7 +256,7 @@ public class HomeActivity extends ActivityBase
                     weiBoList.clear();
                 }
                 if ("top.elizabath.weibococo.ui.entity.PopularWeiBoResult".equals(clazz.getName())) {
-                    PopularWeiBoResult result = GsonUtil.fromJson(responseData, PopularWeiBoResult.class);
+                    WeiBoSearchResult result = GsonUtil.fromJson(responseData, WeiBoSearchResult.class);
                     weiBoList.addAll(result.getData().getCards());
                 } else if ("top.elizabath.weibococo.ui.entity.WeiBoSearchResult".equals(clazz.getName())) {
                     WeiBoSearchResult result = GsonUtil.fromJson(responseData, WeiBoSearchResult.class);

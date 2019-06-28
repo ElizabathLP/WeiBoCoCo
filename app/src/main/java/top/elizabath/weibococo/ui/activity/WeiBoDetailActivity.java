@@ -15,20 +15,21 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
+import com.lzy.ninegrid.ImageInfo;
+import com.lzy.ninegrid.NineGridView;
+import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import top.elizabath.weibococo.R;
-import top.elizabath.weibococo.ui.entity.WeiBoBean;
-import top.elizabath.weibococo.ui.entity.WeiBoDetail;
-import top.elizabath.weibococo.ui.util.GsonUtil;
-import top.elizabath.weibococo.ui.util.HttpUtil;
-import top.elizabath.weibococo.ui.util.KEYManage;
-import top.elizabath.weibococo.ui.util.ToastUtil;
+import top.elizabath.weibococo.ui.entity.*;
+import top.elizabath.weibococo.ui.util.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -37,7 +38,7 @@ public class WeiBoDetailActivity extends AppCompatActivity {
     private final int GET_DETAIL_SUCCESS = 200;
     private final int GET_DETAIL_FAILED = 500;
 
-    private ImageView weiBoImage;
+    private NineGridView weiBoImage;
     private WebView weiBoContent;
     private ImageView weiBoHeadImage;
     private TextView weiBoUserName;
@@ -91,7 +92,7 @@ public class WeiBoDetailActivity extends AppCompatActivity {
                     Log.d(TAG, "onResponse: 信息获取失败");
                     return;
                 }
-                WeiBoDetail weiBoDetail = GsonUtil.fromJson(responseBody,WeiBoDetail.class);
+                WeiBoSearchResult weiBoDetail = GsonUtil.fromJson(responseBody,WeiBoSearchResult.class);
                 Message message = new Message();
                 message.what = GET_DETAIL_SUCCESS;
                 message.obj = weiBoDetail;
@@ -106,11 +107,11 @@ public class WeiBoDetailActivity extends AppCompatActivity {
             switch (msg.what) {
                 case GET_DETAIL_SUCCESS:
 //                    更新控件
-                    WeiBoDetail weiBoDetail = (WeiBoDetail) msg.obj;
+                    WeiBoSearchResult weiBoDetail = (WeiBoSearchResult) msg.obj;
                     String html = makeURL(weiBoDetail.getData().getText());
                     runOnUiThread(() -> {
                         String imgUrl = null;
-                        WeiBoDetail.DataBean.UserBean user = weiBoDetail.getData().getUser();
+                        UserBean user = weiBoDetail.getData().getUser();
                         try {
                             imgUrl = weiBoDetail.getData().getPage_info().getPage_pic().getUrl();
                         } catch (Exception e) {
@@ -120,11 +121,8 @@ public class WeiBoDetailActivity extends AppCompatActivity {
                         weiBoUserName.setText(user.getScreen_name());
                         weiBoMsg.setText(weiBoDetail.getData().getCreated_at() + "   来自 " + weiBoDetail.getData().getSource());
                         Glide.with(WeiBoDetailActivity.this).load(user.getProfile_image_url()).error(R.drawable.cat_my_king).into(weiBoHeadImage);
-                        weiBoImage.setVisibility(View.GONE);
-                        if (imgUrl != null && !"".equals(imgUrl.trim())) {
-                            Glide.with(WeiBoDetailActivity.this).load(imgUrl).error(R.drawable.cat_my_king).into(weiBoImage);
-                            weiBoImage.setVisibility(View.VISIBLE);
-                        }
+                        List<ImageInfo> imgList = getWeiBoImages(weiBoDetail);
+                        weiBoImage.setAdapter(new NineGridViewClickAdapter(WeiBoDetailActivity.this, imgList));
                     });
                     break;
                 default:
@@ -144,5 +142,31 @@ public class WeiBoDetailActivity extends AppCompatActivity {
         builder.append(html);
         builder.append("</div>");
         return builder.toString();
+    }
+
+    private ArrayList<ImageInfo> getWeiBoImages(WeiBoSearchResult weiBoDetail) {
+        List<PicsBean> picBeans = weiBoDetail.getData().getPics();
+        ArrayList<ImageInfo> pics = new ArrayList<>();
+        if (picBeans == null) {
+            PageInfoBean pageInfoBeans = weiBoDetail.getData().getPage_info();
+            if (pageInfoBeans != null) {
+                ImageInfo info = new ImageInfo();
+                info.setThumbnailUrl(pageInfoBeans.getPage_pic().getUrl());
+                info.setBigImageUrl(pageInfoBeans.getPage_pic().getUrl());
+                pics.add(info);
+            }
+            return pics;
+        }
+        for (PicsBean pic : picBeans) {
+            ImageInfo info = new ImageInfo();
+            info.setThumbnailUrl(pic.getUrl());
+            if (null != pic.getLarge()) {
+                info.setBigImageUrl(pic.getLarge().getUrl());
+            } else {
+                info.setBigImageUrl(pic.getUrl());
+            }
+            pics.add(info);
+        }
+        return pics;
     }
 }
