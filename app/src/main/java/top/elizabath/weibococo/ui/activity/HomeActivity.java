@@ -1,6 +1,7 @@
 package top.elizabath.weibococo.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.view.KeyEvent;
