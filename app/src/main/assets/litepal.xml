@@ -32,7 +32,8 @@
 		</list>
 	-->
 	<list>
-		<mapping class="top.elizabath.weibococo.ui.entity.User"/>
+		<mapping class="top.elizabath.weibococo.ui.entity.tbl.tbl_usr"/>
+		<mapping class="top.elizabath.weibococo.ui.entity.tbl.tbl_cookie"/>
 	</list>
 
 	<!--

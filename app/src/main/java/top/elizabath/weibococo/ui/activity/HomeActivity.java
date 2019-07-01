@@ -176,16 +176,17 @@ public class HomeActivity extends ActivityBase
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
+            if (!"HomeActivity".equals(getClass().getSimpleName())) {
+                Intent intent = new Intent(ApplicationManager.getContext(),HomeActivity.class);
+                startActivity(intent);
+            }
+        } else if (id == R.id.nav_report) {
+            Intent intent = new Intent(ApplicationManager.getContext(),ReportMsgActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_tools) {
-
+            ToastUtil.showToast(ApplicationManager.getContext(),"此功能还未开发");
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            ToastUtil.showToast(ApplicationManager.getContext(),"此功能还未开发");
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;

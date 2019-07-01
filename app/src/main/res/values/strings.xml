@@ -26,4 +26,5 @@
 	<string name="action_search">Search</string>
 	<string name="title_activity_wei_bo_detail">WeiBoDetailActivity</string>
 	<string name="title_activity_test">testActivity</string>
+	<string name="title_activity_report_msg">ReportMsgActivity</string>
 </resources>
