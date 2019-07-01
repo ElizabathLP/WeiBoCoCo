@@ -61,14 +61,27 @@
 				android:layout_margin="5dp"
 				android:textSize="20sp"/>
 
-			<com.lzy.ninegrid.NineGridView
-				android:id="@+id/weiboDetailImage"
-				android:layout_width="match_parent"
-				android:layout_height="300dp"
-				android:background="#FFF"
-				android:scaleType="centerCrop"
-				android:layout_marginHorizontal="5dp"
-				android:visibility="gone"/>
+
+
+			<com.qmuiteam.qmui.layout.QMUIFrameLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent">
+				<com.lzy.ninegrid.NineGridView
+					android:id="@+id/weiboDetailImage"
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					app:qmui_childHorizontalSpacing="10dp"
+					app:qmui_childVerticalSpacing="10dp"
+					android:background="#FFF"
+					android:scaleType="centerCrop"
+					android:layout_marginHorizontal="5dp"
+					android:visibility="gone"/>
+				<com.dueeeke.videoplayer.player.IjkVideoView
+					android:id="@+id/weiboDetailVideo"
+					android:layout_width="match_parent"
+					android:visibility="gone"
+					android:layout_height="200dp"/>
+			</com.qmuiteam.qmui.layout.QMUIFrameLayout>
 		</LinearLayout>
 	</ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

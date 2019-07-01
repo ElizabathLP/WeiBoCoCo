@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import androidx.appcompat.widget.Toolbar;
+import com.dueeeke.videocontroller.StandardVideoController;
+import com.dueeeke.videoplayer.player.IjkVideoView;
 import com.lzy.ninegrid.ImageInfo;
 import com.lzy.ninegrid.NineGridView;
 import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
@@ -40,6 +43,8 @@ public class WeiBoDetailActivity extends ActivityBase {
     private ImageView weiBoHeadImage;
     private TextView weiBoUserName;
     private TextView weiBoMsg;
+    private IjkVideoView weiBoVideo;
+    private StandardVideoController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +55,9 @@ public class WeiBoDetailActivity extends ActivityBase {
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
         String bid = intent.getStringExtra("bid");
-        if (StringUtils.isBlank(bid)){
-            ToastUtil.showToast(WeiBoDetailActivity.this,"获取微博详情失败");
-        }else {
+        if (StringUtils.isBlank(bid)) {
+            ToastUtil.showToast(WeiBoDetailActivity.this, "获取微博详情失败");
+        } else {
             getWeiBoDetail(bid);
         }
     }
@@ -63,17 +68,19 @@ public class WeiBoDetailActivity extends ActivityBase {
         weiBoHeadImage = findViewById(R.id.weiBoDetailHeadImage);
         weiBoUserName = findViewById(R.id.weiBoDetailUserName);
         weiBoMsg = findViewById(R.id.weiBoDetailMsg);
+        weiBoVideo = findViewById(R.id.weiboDetailVideo);
+        controller = new StandardVideoController(getApplicationContext());
     }
 
-    private void getWeiBoDetail(String bid){
+    private void getWeiBoDetail(String bid) {
         OkHttpUtils.get()
                 .url(KEYManage.WEIBO_DETAIL_URL)
-                .addParams("id",bid)
-                .addHeader("Accept","application/json, text/plain, */*")
-                .addHeader("MWeibo-Pwa","1")
-                .addHeader("User-Agent","Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1")
-                .addHeader("X-Requested-With","XMLHttpRequest")
-                .addHeader("Referer","https://m.weibo.cn/status/HAizshrbq?mblogid=HAizshrbq&luicode=10000011&lfid=100103type%3D61%26q%3D110%26t%3D0")
+                .addParams("id", bid)
+                .addHeader("Accept", "application/json, text/plain, */*")
+                .addHeader("MWeibo-Pwa", "1")
+                .addHeader("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1")
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Referer", "https://m.weibo.cn/status/HAizshrbq?mblogid=HAizshrbq&luicode=10000011&lfid=100103type%3D61%26q%3D110%26t%3D0")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -83,11 +90,11 @@ public class WeiBoDetailActivity extends ActivityBase {
 
                     @Override
                     public void onResponse(String responseBody, int id) {
-                        if (StringUtils.isBlank(responseBody)){
+                        if (StringUtils.isBlank(responseBody)) {
                             Log.d(TAG, "onResponse: 信息获取失败");
                             return;
                         }
-                        WeiBoSearchResult weiBoDetail = GsonUtil.fromJson(responseBody,WeiBoSearchResult.class);
+                        WeiBoSearchResult weiBoDetail = GsonUtil.fromJson(responseBody, WeiBoSearchResult.class);
                         Message message = new Message();
                         message.what = GET_DETAIL_SUCCESS;
                         message.obj = weiBoDetail;
@@ -109,8 +116,33 @@ public class WeiBoDetailActivity extends ActivityBase {
                         weiBoUserName.setText(user.getScreen_name());
                         weiBoMsg.setText(weiBoDetail.getData().getCreated_at() + "   来自 " + weiBoDetail.getData().getSource());
                         Glide.with(WeiBoDetailActivity.this).load(user.getProfile_image_url()).error(R.drawable.cat_my_king).into(weiBoHeadImage);
+                        weiBoVideo.setVisibility(View.GONE);
+                        PageInfoBean pageInfoBeans = weiBoDetail.getData().getPage_info();
                         List<ImageInfo> imgList = getWeiBoImages(weiBoDetail);
-                        weiBoImage.setAdapter(new NineGridViewClickAdapter(WeiBoDetailActivity.this, imgList));
+                        if (pageInfoBeans != null) {
+                            String type = pageInfoBeans.getType();
+                            switch (type) {
+                                case "video":
+                                    weiBoVideo.setVisibility(View.VISIBLE);
+                                    ImageView thumb = controller.getThumb();
+                                    Glide.with(thumb.getContext())
+                                            .load(pageInfoBeans.getPage_pic().getUrl())
+                                            .error(R.drawable.cat_my_king)
+                                            .centerCrop()
+                                            .placeholder(android.R.color.white)
+                                            .into(thumb);
+                                    weiBoVideo.setUrl(pageInfoBeans.getMedia_info().getStream_url()); //设置视频地址
+                                    controller.setTitle(pageInfoBeans.getTitle()); //设置视频标题
+                                    weiBoVideo.setVideoController(controller); //设置控制器，如需定制可继承BaseVideoController
+                                    weiBoImage.setVisibility(View.GONE);
+                                    break;
+                                default:
+                                    weiBoImage.setVisibility(View.VISIBLE);
+                                    weiBoVideo.setVisibility(View.GONE);
+                                    weiBoImage.setAdapter(new NineGridViewClickAdapter(WeiBoDetailActivity.this, imgList));
+                                    break;
+                            }
+                        }
                     });
                     break;
                 default:
@@ -143,5 +175,31 @@ public class WeiBoDetailActivity extends ActivityBase {
             pics.add(info);
         }
         return pics;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        weiBoVideo.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        weiBoVideo.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        weiBoVideo.release();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (!weiBoVideo.onBackPressed()) {
+            super.onBackPressed();
+        }
     }
 }

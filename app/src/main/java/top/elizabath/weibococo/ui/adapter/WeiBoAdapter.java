@@ -31,6 +31,7 @@ import java.util.List;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dueeeke.videocontroller.StandardVideoController;
+import com.dueeeke.videoplayer.player.IjkVideoView;
 import com.lzy.ninegrid.ImageInfo;
 import com.lzy.ninegrid.NineGridView;
 import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
@@ -64,7 +65,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         TextView weiBoUserName;
         TextView weiBoMsg;
         StandardVideoController controller;
-        com.dueeeke.videoplayer.player.IjkVideoView weiBoVideo;
+        IjkVideoView weiBoVideo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
