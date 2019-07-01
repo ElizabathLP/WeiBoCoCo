@@ -44,7 +44,6 @@ public class WeiBoDetailActivity extends ActivityBase {
     private TextView weiBoUserName;
     private TextView weiBoMsg;
     private IjkVideoView weiBoVideo;
-    private StandardVideoController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,6 @@ public class WeiBoDetailActivity extends ActivityBase {
         weiBoUserName = findViewById(R.id.weiBoDetailUserName);
         weiBoMsg = findViewById(R.id.weiBoDetailMsg);
         weiBoVideo = findViewById(R.id.weiboDetailVideo);
-        controller = new StandardVideoController(getApplicationContext());
     }
 
     private void getWeiBoDetail(String bid) {
@@ -124,6 +122,7 @@ public class WeiBoDetailActivity extends ActivityBase {
                             switch (type) {
                                 case "video":
                                     weiBoVideo.setVisibility(View.VISIBLE);
+                                    StandardVideoController controller = new StandardVideoController(WeiBoDetailActivity.this);
                                     ImageView thumb = controller.getThumb();
                                     Glide.with(thumb.getContext())
                                             .load(pageInfoBeans.getPage_pic().getUrl())
