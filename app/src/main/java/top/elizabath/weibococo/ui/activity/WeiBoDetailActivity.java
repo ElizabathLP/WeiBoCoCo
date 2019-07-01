@@ -14,6 +14,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.lzy.ninegrid.ImageInfo;
 import com.lzy.ninegrid.NineGridView;
 import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -64,36 +66,34 @@ public class WeiBoDetailActivity extends ActivityBase {
     }
 
     private void getWeiBoDetail(String bid){
-        LinkedHashMap<String,String> params = new LinkedHashMap<>();
-        params.put("id",bid);
-        LinkedHashMap<String,String> header = new LinkedHashMap<>();
-        header.put("Accept","application/json, text/plain, */*");
-        header.put("MWeibo-Pwa","1");
-        header.put("User-Agent","Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
-        header.put("X-Requested-With","XMLHttpRequest");
-        header.put("Referer","https://m.weibo.cn/status/HAizshrbq?mblogid=HAizshrbq&luicode=10000011&lfid=100103type%3D61%26q%3D110%26t%3D0");
+        OkHttpUtils.get()
+                .url(KEYManage.WEIBO_DETAIL_URL)
+                .addParams("id",bid)
+                .addHeader("Accept","application/json, text/plain, */*")
+                .addHeader("MWeibo-Pwa","1")
+                .addHeader("User-Agent","Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1")
+                .addHeader("X-Requested-With","XMLHttpRequest")
+                .addHeader("Referer","https://m.weibo.cn/status/HAizshrbq?mblogid=HAizshrbq&luicode=10000011&lfid=100103type%3D61%26q%3D110%26t%3D0")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        // 失败
+                    }
 
-        HttpUtil.sendOkHttpGetRequest(KEYManage.WEIBO_DETAIL_URL, params, header, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                // 失败
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                // 成功
-                String responseBody = response.body().string();
-                if (StringUtils.isBlank(responseBody)){
-                    Log.d(TAG, "onResponse: 信息获取失败");
-                    return;
-                }
-                WeiBoSearchResult weiBoDetail = GsonUtil.fromJson(responseBody,WeiBoSearchResult.class);
-                Message message = new Message();
-                message.what = GET_DETAIL_SUCCESS;
-                message.obj = weiBoDetail;
-                handler.handleMessage(message);
-            }
-        });
+                    @Override
+                    public void onResponse(String responseBody, int id) {
+                        if (StringUtils.isBlank(responseBody)){
+                            Log.d(TAG, "onResponse: 信息获取失败");
+                            return;
+                        }
+                        WeiBoSearchResult weiBoDetail = GsonUtil.fromJson(responseBody,WeiBoSearchResult.class);
+                        Message message = new Message();
+                        message.what = GET_DETAIL_SUCCESS;
+                        message.obj = weiBoDetail;
+                        handler.handleMessage(message);
+                    }
+                });
     }
 
     private final Handler handler = new Handler() {
@@ -101,7 +101,6 @@ public class WeiBoDetailActivity extends ActivityBase {
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case GET_DETAIL_SUCCESS:
-//                    更新控件
                     WeiBoSearchResult weiBoDetail = (WeiBoSearchResult) msg.obj;
                     String html = URLHelper.replaceUrlNormaily(weiBoDetail.getData().getText());
                     runOnUiThread(() -> {

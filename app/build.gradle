@@ -66,6 +66,12 @@ dependencies {
     implementation 'com.qmuiteam:qmui:1.2.0'
     implementation 'com.qmuiteam:arch:0.3.1'
     implementation 'com.lzy.widget:ninegridview:0.2.1'
-    implementation 'com.shuyu:GSYVideoPlayer:7.0.1'
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-java:2.5.7'
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-armv7a:2.5.7'
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-armv5:2.5.7'
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-arm64:2.5.7'
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-x86:2.5.7'
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-x86_64:2.5.7'
+    implementation 'com.github.dueeeke.dkplayer:dkplayer-ui:2.5.7'
     implementation 'com.zhy:okhttputils:2.6.2'
 }

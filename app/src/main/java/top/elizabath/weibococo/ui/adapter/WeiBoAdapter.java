@@ -36,6 +36,8 @@ import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
 import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -145,7 +147,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
                     return;
                 }
                 reportWeiBo(KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE, KEYManage.COMPLAINT_CATEGORY_YELLOW_MESSAGE_TYPE_SELL_YELLOW_RESOURCES, nowTime, weiBoId, reporterId, weiBoOwnerId);
-                ToastUtil.showToast(context,"举报成功");
+                ToastUtil.showToast(context, "举报成功");
             });
             dialog.addAction("Cancel", (alog, index) -> {
                 // 取消按钮
@@ -258,43 +260,43 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
     }
 
     private void reportWeiBo(int category, int tag_id, String nowTime, String weiBoId, String reporterId, String weiBoOwnerId) {
-        LinkedHashMap<String, String> params = new LinkedHashMap<>();
-        params.put("category", String.valueOf(category));
-        params.put("tag_id", String.valueOf(tag_id));
-        params.put("type", "1");
-        params.put("rid", weiBoId);
-        params.put("uid", reporterId);
-        params.put("r_uid", weiBoOwnerId);
-        params.put("getrid", weiBoId);
-        LinkedHashMap<String, String> head = new LinkedHashMap<>();
-        head.put("Host", "service.account.weibo.com");
-        head.put("Connection", "keep-alive");
-        head.put("Content-Length", "158");
-        head.put("Origin", "https://service.account.weibo.com");
-        head.put("X-Requested-With", "XMLHttpRequest");
-        head.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36");
-        head.put("Content-Type", "application/x-www-form-urlencoded");
-        head.put("Accept", "*/*");
-        head.put("Referer", "https://service.account.weibo.com/reportspamobile?rid=" + weiBoId + "&type=1&from=20000");
-        head.put("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
-        head.put("Cookie", "ALF=" + nowTime.substring(0, nowTime.length() - 3) + "; SUB=_2A25wFjENDeRhGeVM7VYZ9SfJwzuIHXVT-V9FrDV8PUJbkNAKLRD1kW1NTPrCAGTYHesbiDUFJ7n31LmaaQgWBNxu; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WF4Nzr5EBRaFEJ9ybQXnj1U5JpX5oz75NHD95Q0eoqX1h-4SKnNWs4DqcjHBgfbIPxDdcRLxKBLBonLBo9zdcp.; S_ACCOUNT-G0=83b4ce5166df2ff731e23703d58dea95");
-        HttpUtil.sendOkHttpPostRequest(KEYManage.WEIBO_REPORT_URL + nowTime, params, head, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                // 失败
-                Log.d(TAG, "onResponse: " + "举报失败，请检查网络设置");
-            }
+        OkHttpUtils.post()
+                .url(KEYManage.WEIBO_REPORT_URL)
+                .addHeader("Host", "service.account.weibo.com")
+                .addHeader("Connection", "keep-alive")
+                .addHeader("Content-Length", "158")
+                .addHeader("Origin", "https://service.account.weibo.com")
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36")
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .addHeader("Accept", "*/*")
+                .addHeader("Referer", "https://service.account.weibo.com/reportspamobile?rid=" + weiBoId + "&type=1&from=20000")
+                .addHeader("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+                .addHeader("Cookie", "ALF=" + nowTime.substring(0, nowTime.length() - 3) + "; SUB=_2A25wFjENDeRhGeVM7VYZ9SfJwzuIHXVT-V9FrDV8PUJbkNAKLRD1kW1NTPrCAGTYHesbiDUFJ7n31LmaaQgWBNxu; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WF4Nzr5EBRaFEJ9ybQXnj1U5JpX5oz75NHD95Q0eoqX1h-4SKnNWs4DqcjHBgfbIPxDdcRLxKBLBonLBo9zdcp.; S_ACCOUNT-G0=83b4ce5166df2ff731e23703d58dea95")
+                .addParams("category", String.valueOf(category))
+                .addParams("tag_id", String.valueOf(tag_id))
+                .addParams("type", "1")
+                .addParams("rid", weiBoId)
+                .addParams("uid", reporterId)
+                .addParams("r_uid", weiBoOwnerId)
+                .addParams("getrid", weiBoId)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        // 失败
+                        Log.d(TAG, "onResponse: " + "举报失败，请检查网络设置");
+                    }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                // 成功
-                String responseData = response.body().string();
-                WeiBoReportMsg result = GsonUtil.fromJson(responseData, WeiBoReportMsg.class);
-                Log.d(TAG, "onResponse: " + result.getMsg());
-            }
-        });
-
+                    @Override
+                    public void onResponse(String response, int id) {
+                        // 成功
+                        WeiBoReportMsg result = GsonUtil.fromJson(response, WeiBoReportMsg.class);
+                        Log.d(TAG, "onResponse: " + result.getMsg());
+                    }
+                });
     }
+
     private ArrayList<ImageInfo> getWeiBoImages(WeiBoBean weiBo) {
         List<PicsBean> picBeans = weiBo.getMblog().getPics();
         ArrayList<ImageInfo> pics = new ArrayList<>();

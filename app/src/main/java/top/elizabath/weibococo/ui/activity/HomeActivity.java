@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 import okhttp3.Call;
 
 import okhttp3.Response;
@@ -243,9 +245,9 @@ public class HomeActivity extends ActivityBase
     }
 
     public void getWeiBoList(LinkedHashMap<String, String> params, LinkedHashMap<String, String> headers, String way, boolean isLoadMore) {
-        HttpUtil.sendOkHttpGetRequest(KEYManage.WEIBO_SEARCH_URL, params, headers, new okhttp3.Callback() {
+        OkHttpUtils.get().url(KEYManage.WEIBO_SEARCH_URL).params(params).headers(headers).build().execute(new StringCallback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onError(Call call, Exception e, int id) {
                 // 异常处理
                 Log.d(TAG, "请求失败");
                 Message message = new Message();
@@ -254,9 +256,8 @@ public class HomeActivity extends ActivityBase
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(String responseData, int id) {
                 // 返回数据
-                String responseData = response.body().string();
                 if (!isLoadMore) {
                     weiBoList.clear();
                 }
