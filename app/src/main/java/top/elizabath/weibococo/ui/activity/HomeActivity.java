@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import android.view.KeyEvent;
 import android.widget.Toast;
+import com.dueeeke.videoplayer.player.IjkVideoView;
+import com.dueeeke.videoplayer.player.VideoViewManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -80,6 +82,20 @@ public class HomeActivity extends ActivityBase
         weibolist.setLayoutManager(layoutManager);
         weiBoAdapter = new WeiBoAdapter(weiBoList);
         weibolist.setAdapter(weiBoAdapter);
+        weibolist.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
+            @Override
+            public void onChildViewAttachedToWindow(@NonNull View view) {
+
+            }
+
+            @Override
+            public void onChildViewDetachedFromWindow(@NonNull View view) {
+                IjkVideoView ijkVideoView = view.findViewById(R.id.weiboVideo);
+                if (ijkVideoView != null && !ijkVideoView.isFullScreen()) {
+                    ijkVideoView.stopPlayback();
+                }
+            }
+        });
         setSupportActionBar(toolbar);
         fab.setOnClickListener(this);
 
@@ -114,6 +130,9 @@ public class HomeActivity extends ActivityBase
 
     @Override
     public void onBackPressed() {
+        if (!VideoViewManager.instance().onBackPressed()){
+            super.onBackPressed();
+        }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -341,5 +360,11 @@ public class HomeActivity extends ActivityBase
         } else {
             searchPopularWeiBo(nowPage, true);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        VideoViewManager.instance().releaseVideoPlayer();
     }
 }

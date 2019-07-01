@@ -66,25 +66,11 @@
 				app:qmui_childHorizontalSpacing="10dp"
 				app:qmui_childVerticalSpacing="10dp"
 				/>
-			<com.qmuiteam.qmui.widget.QMUIRadiusImageView
-				android:id="@+id/weiBoVideoDisplayImg"
-				android:layout_width="match_parent"
-				android:layout_height="300dp"
-				android:scaleType="centerCrop"
-				android:visibility="gone"
-				/>
-			<com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
-				android:id="@+id/weiBoVideoPlayBtn"
-				android:layout_width="50dp"
-				android:background="@drawable/ic_play"
-				android:layout_gravity="center"
-				android:visibility="gone"
-				android:layout_height="50dp"/>
-			<VideoView
+			<com.dueeeke.videoplayer.player.IjkVideoView
 				android:id="@+id/weiboVideo"
 				android:layout_width="match_parent"
 				android:visibility="gone"
-				android:layout_height="300dp"/>
+				android:layout_height="200dp"/>
 		</com.qmuiteam.qmui.layout.QMUIFrameLayout>
 
 

@@ -30,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.dueeeke.videocontroller.StandardVideoController;
 import com.lzy.ninegrid.ImageInfo;
 import com.lzy.ninegrid.NineGridView;
 import com.lzy.ninegrid.preview.NineGridViewClickAdapter;
@@ -46,7 +47,6 @@ import top.elizabath.weibococo.R;
 import top.elizabath.weibococo.ui.activity.WeiBoDetailActivity;
 import top.elizabath.weibococo.ui.entity.*;
 import top.elizabath.weibococo.ui.util.*;
-import top.elizabath.weibococo.ui.view.CustomVideoView;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -63,9 +63,8 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         ImageView weiBoHeadImage;
         TextView weiBoUserName;
         TextView weiBoMsg;
-        VideoView weiBoVideo;
-        QMUIAlphaImageButton weiBoVideoPlayBtn;
-        QMUIRadiusImageView weiBoVideoDisplayImg;
+        StandardVideoController controller;
+        com.dueeeke.videoplayer.player.IjkVideoView weiBoVideo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,8 +75,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             weiBoUserName = itemView.findViewById(R.id.weiBoUserName);
             weiBoMsg = itemView.findViewById(R.id.weiBoMsg);
             weiBoVideo = itemView.findViewById(R.id.weiboVideo);
-            weiBoVideoPlayBtn = itemView.findViewById(R.id.weiBoVideoPlayBtn);
-            weiBoVideoDisplayImg = itemView.findViewById(R.id.weiBoVideoDisplayImg);
+            controller = new StandardVideoController(itemView.getContext());
         }
     }
 
@@ -116,7 +114,7 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         holder.cardView.setOnClickListener(weibo -> {
             // 点击跳转详情按钮
             int position = holder.getAdapterPosition();
-            goToWeiBoDetail(position);
+            goToWeiBoDetail(position,holder);
         });
         holder.cardView.setOnLongClickListener(view1 -> {
             // 点击发起举报请求
@@ -157,65 +155,16 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             dialog.show();
             return true;
         });
-        holder.weiBoVideoPlayBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.weiBoVideoPlayBtn.setVisibility(View.GONE);
-                holder.weiBoVideoDisplayImg.setVisibility(View.GONE);
-                holder.weiBoVideo.setVisibility(View.VISIBLE);
-                holder.weiBoVideo.start();
-            }
-        });
-        holder.weiBoVideo.setOnTouchListener(new View.OnTouchListener() {
-            GestureDetector detector;
-
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (detector == null) {
-                    detector = new GestureDetector(context, new GestureDetector.OnGestureListener() {
-                        @Override
-                        public boolean onDown(MotionEvent motionEvent) {
-                            holder.weiBoVideo.pause();
-                            holder.weiBoVideoPlayBtn.setVisibility(View.VISIBLE);
-                            holder.weiBoVideoDisplayImg.setVisibility(View.VISIBLE);
-                            holder.weiBoVideo.setVisibility(View.GONE);
-                            return true;
-                        }
-
-                        @Override
-                        public void onShowPress(MotionEvent motionEvent) {
-                        }
-
-                        @Override
-                        public boolean onSingleTapUp(MotionEvent motionEvent) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                            return false;
-                        }
-
-                        @Override
-                        public void onLongPress(MotionEvent motionEvent) {
-                        }
-
-                        @Override
-                        public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                            return false;
-                        }
-                    });
-                }
-                return detector.onTouchEvent(motionEvent);
-            }
-        });
     }
 
-    private void goToWeiBoDetail(int position) {
+    private void goToWeiBoDetail(int position, ViewHolder holder) {
         WeiBoBean weiBo = weiBoList.get(position);
         String bid = weiBo.getMblog().getBid();
         Intent intent = new Intent(context, WeiBoDetailActivity.class);
         intent.putExtra("bid", bid);
+        if (holder.weiBoVideo != null && !holder.weiBoVideo.isFullScreen()) {
+            holder.weiBoVideo.stopPlayback();
+        }
         context.startActivity(intent);
     }
 
@@ -230,8 +179,6 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
         holder.weiBoUserName.setText(user.getScreen_name());
         holder.weiBoMsg.setText(card.getMblog().getCreated_at() + "   来自 " + card.getMblog().getSource());
         Glide.with(context).load(user.getProfile_image_url()).error(R.drawable.cat_my_king).into(holder.weiBoHeadImage);
-        holder.weiBoVideoPlayBtn.setVisibility(View.GONE);
-        holder.weiBoVideoDisplayImg.setVisibility(View.GONE);
         holder.weiBoVideo.setVisibility(View.GONE);
         PageInfoBean pageInfoBeans = card.getMblog().getPage_info();
         List<ImageInfo> imgList = getWeiBoImages(card);
@@ -239,11 +186,18 @@ public class WeiBoAdapter extends RecyclerView.Adapter<WeiBoAdapter.ViewHolder> 
             String type = pageInfoBeans.getType();
             switch (type) {
                 case "video":
+                    holder.weiBoVideo.setVisibility(View.VISIBLE);
+                    ImageView thumb = holder.controller.getThumb();
+                    Glide.with(thumb.getContext())
+                            .load(pageInfoBeans.getPage_pic().getUrl())
+                            .error(R.drawable.cat_my_king)
+                            .centerCrop()
+                            .placeholder(android.R.color.white)
+                            .into(thumb);
+                    holder.weiBoVideo.setUrl(pageInfoBeans.getMedia_info().getStream_url()); //设置视频地址
+                    holder.controller.setTitle(pageInfoBeans.getTitle()); //设置视频标题
+                    holder.weiBoVideo.setVideoController(holder.controller); //设置控制器，如需定制可继承BaseVideoController
                     holder.weiBoImage.setVisibility(View.GONE);
-                    holder.weiBoVideoDisplayImg.setVisibility(View.VISIBLE);
-                    Glide.with(context).load(pageInfoBeans.getPage_pic().getUrl()).error(R.drawable.cat_my_king).into(holder.weiBoVideoDisplayImg);
-                    holder.weiBoVideoPlayBtn.setVisibility(View.VISIBLE);
-                    holder.weiBoVideo.setVideoPath(pageInfoBeans.getMedia_info().getStream_url());
                     break;
                 default:
                     holder.weiBoImage.setVisibility(View.VISIBLE);

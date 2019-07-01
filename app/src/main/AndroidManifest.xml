@@ -28,6 +28,7 @@
 		<activity
 			android:name=".ui.activity.WeiBoDetailActivity"
 			android:label="@string/title_activity_wei_bo_detail"
+			android:configChanges="keyboardHidden|orientation|screenSize"
 			android:theme="@style/AppTheme.NoActionBar">
 		</activity>
 		<activity
@@ -36,6 +37,7 @@
 		<activity
 			android:name=".ui.activity.HomeActivity"
 			android:label="@string/title_activity_home"
+			android:configChanges="keyboardHidden|orientation|screenSize"
 			android:theme="@style/AppTheme.NoActionBar">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
